@@ -1,0 +1,257 @@
+# Portfolio Project — Cursor Rules
+# Stack: Next.js 14 (App Router) · Tailwind CSS · Framer Motion · Node.js · Express · Supabase · Tiptap
+
+# ─────────────────────────────────────────────
+# 1. PROJECT OVERVIEW
+# ─────────────────────────────────────────────
+
+This is a personal developer portfolio website with:
+- A public-facing Next.js frontend (pages: home, projects, blog list, blog post, contact)
+- A private /admin section for writing and managing blog posts (Tiptap editor)
+- A standalone Node.js + Express backend API
+- Supabase (PostgreSQL) as the database and file storage
+- Tiptap for rich-text blog editing — content stored as jsonb in Supabase
+
+# ─────────────────────────────────────────────
+# 2. MONOREPO FOLDER STRUCTURE
+# ─────────────────────────────────────────────
+
+portfolio/
+├── frontend/                  # Next.js 14 app
+│   ├── app/
+│   │   ├── (public)/
+│   │   │   ├── page.tsx               # Home / hero
+│   │   │   ├── projects/page.tsx
+│   │   │   ├── blog/page.tsx          # Blog list
+│   │   │   ├── blog/[slug]/page.tsx   # Single post
+│   │   │   └── contact/page.tsx
+│   │   └── admin/
+│   │       ├── login/page.tsx
+│   │       └── posts/
+│   │           ├── page.tsx           # Manage posts
+│   │           └── [id]/page.tsx      # Tiptap editor
+│   ├── components/
+│   │   ├── ui/                        # Shared UI primitives
+│   │   ├── Editor.tsx                 # Tiptap editor wrapper
+│   │   └── BlogRenderer.tsx           # Renders Tiptap JSON for public pages
+│   ├── lib/
+│   │   ├── api.ts                     # All React Query hooks (useBlogs, useContact etc.)
+│   │   ├── schemas.ts                 # Zod schemas shared across forms
+│   │   └── supabaseClient.ts          # Supabase browser client (anon key only)
+│   └── types/
+│       └── database.types.ts          # Auto-generated Supabase types (never edit manually)
+│
+└── backend/                   # Express API server
+    └── src/
+        ├── index.ts                   # Entry — applies middleware, mounts routers
+        ├── routes/
+        │   ├── contact.ts             # POST /api/contact
+        │   ├── blogs.ts               # GET /api/blogs, GET /api/blogs/:slug, POST, PATCH, DELETE
+        │   └── upload.ts              # POST /api/upload  (multer → Supabase Storage)
+        ├── middleware/
+        │   ├── auth.ts                # Verifies Supabase JWT on protected routes
+        │   └── rateLimiter.ts         # express-rate-limit config
+        ├── lib/
+        │   └── supabase.ts            # Supabase SERVICE ROLE client — never expose to frontend
+        └── types/
+            └── database.types.ts      # Same generated types as frontend (copy or symlink)
+
+# ─────────────────────────────────────────────
+# 3. ENVIRONMENT VARIABLES
+# ─────────────────────────────────────────────
+
+# frontend/.env.local
+NEXT_PUBLIC_API_URL=http://localhost:4000       # Express backend base URL
+NEXT_PUBLIC_SUPABASE_URL=https://<ref>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon-key>       # Safe to expose — anon key only
+
+# backend/.env
+PORT=4000
+SUPABASE_URL=https://<ref>.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=<service-role-key>   # NEVER expose this to the frontend
+ALLOWED_ORIGIN=http://localhost:3001           # CORS whitelist
+
+# ─────────────────────────────────────────────
+# 4. DATABASE SCHEMA (Supabase / PostgreSQL)
+# ─────────────────────────────────────────────
+
+-- contact_submissions
+id            uuid primary key default gen_random_uuid()
+name          text not null
+email         text not null
+message       text not null
+status        text default 'unread'        -- unread | read | replied
+created_at    timestamptz default now()
+
+-- blog_posts
+id            uuid primary key default gen_random_uuid()
+title         text not null
+slug          text unique not null
+excerpt       text
+cover_url     text                          -- Supabase Storage public CDN URL
+content       jsonb not null               -- Tiptap JSON doc node
+published     boolean default false
+published_at  timestamptz
+created_at    timestamptz default now()
+updated_at    timestamptz default now()
+
+-- tags
+id            uuid primary key default gen_random_uuid()
+name          text not null
+slug          text unique not null
+
+-- blog_post_tags  (join table)
+blog_post_id  uuid references blog_posts(id) on delete cascade
+tag_id        uuid references tags(id) on delete cascade
+primary key (blog_post_id, tag_id)
+
+-- email_queue  (reserved for future Resend integration)
+id            uuid primary key default gen_random_uuid()
+to_email      text not null
+subject       text not null
+template      text not null
+payload       jsonb
+status        text default 'pending'       -- pending | sent | failed
+created_at    timestamptz default now()
+
+# ─────────────────────────────────────────────
+# 5. API CONTRACT (Express routes)
+# ─────────────────────────────────────────────
+
+Public (no auth):
+  GET    /api/blogs                  List published posts — supports ?page=&limit=&tag=
+  GET    /api/blogs/:slug            Single post by slug
+  POST   /api/contact                Submit contact form
+
+Admin (requires Supabase JWT via Authorization: Bearer <token>):
+  POST   /api/blogs                  Create new post
+  PATCH  /api/blogs/:id              Update post (title, content, published etc.)
+  DELETE /api/blogs/:id              Delete post
+  POST   /api/upload                 Upload image → Supabase Storage → returns { url }
+
+# ─────────────────────────────────────────────
+# 6. CODING CONVENTIONS
+# ─────────────────────────────────────────────
+
+TYPESCRIPT
+- Strict mode enabled in both frontend and backend tsconfig
+- Always import DB types from database.types.ts — never write inline table types
+- Use type inference where obvious; add explicit return types on all exported functions
+- Prefer type over interface unless extending
+
+NAMING
+- React components: PascalCase (BlogCard.tsx, ContactForm.tsx)
+- Hooks: camelCase prefixed with use (useBlogs, useContactForm)
+- API route files: camelCase matching the resource (blogs.ts, contact.ts)
+- DB column names: snake_case (always — mirrors Supabase generated types)
+- Frontend variables/functions: camelCase
+- Zod schemas: PascalCase suffixed with Schema (ContactSchema, BlogPostSchema)
+
+REACT / NEXT.JS
+- Use the App Router — never use pages/ directory
+- Mark components "use client" only when they use hooks or browser APIs
+- Keep server components as the default — fetch data in server components where possible
+- All API calls go through React Query hooks in lib/api.ts — never fetch() inline in components
+- Use next/image for all images — never bare <img> tags
+- Use next/link for all internal navigation — never bare <a> tags
+
+STYLING
+- Tailwind CSS only — no inline styles, no CSS modules, no styled-components
+- Follow mobile-first responsive design (sm: md: lg: breakpoints)
+- Dark mode via next-themes — use dark: variants in Tailwind classes
+- No hardcoded hex colors — use Tailwind color tokens only
+
+FRAMER MOTION
+- Wrap page-level animations in a layout.tsx AnimatePresence
+- Use variants objects for reusable animation configs — not inline objects
+- Always respect prefers-reduced-motion via useReducedMotion hook
+
+EXPRESS BACKEND
+- Every route must go through zod validation before touching the DB
+- Use the service role Supabase client only in backend — never in frontend
+- All routes return { data, error } shaped responses
+- HTTP status codes must be semantically correct (201 for creates, 400 for validation errors, 401 for auth failures, 404 for not found)
+- Never log sensitive data (tokens, passwords, email content) to console
+
+SUPABASE
+- Never use the service role key in frontend code — not even in server components
+- Always use generated types from database.types.ts for all query results
+- Use .select() with explicit column lists — never .select('*') in production routes
+- Enable RLS on all tables — write policies before shipping any route
+
+TIPTAP
+- Editor lives in components/Editor.tsx — one wrapper component, fully reusable
+- Content is always stored and retrieved as a Tiptap JSON doc node (not HTML)
+- Use generateHTML() from @tiptap/html for rendering on public blog pages
+- Image upload calls POST /api/upload — never upload directly from the browser to Supabase
+- Required extensions: StarterKit, Image, Link, Placeholder, CharacterCount
+
+# ─────────────────────────────────────────────
+# 7. PATTERNS TO ALWAYS FOLLOW
+# ─────────────────────────────────────────────
+
+ADDING A NEW EXPRESS ROUTE:
+1. Define the Zod schema at the top of the route file
+2. Add auth middleware if the route is admin-only
+3. Validate request body/params with schema.safeParse()
+4. Query Supabase using the typed client
+5. Return { data } on success or { error } on failure
+6. Export the router and mount it in index.ts
+
+ADDING A NEW NEXT.JS PAGE:
+1. Create the file under app/(public)/ or app/admin/
+2. Add a React Query hook in lib/api.ts for the data fetch
+3. Use the hook in the page component — no inline fetches
+4. Wrap animated sections with Framer Motion variants
+5. Add metadata export for SEO
+
+ADDING A NEW SUPABASE TABLE:
+1. Write the SQL in a migration file first
+2. Run supabase gen types typescript to regenerate database.types.ts
+3. Copy the updated types file to both frontend/types and backend/types
+4. Never manually edit database.types.ts
+
+# ─────────────────────────────────────────────
+# 8. WHAT NOT TO DO — NEVER SUGGEST THESE
+# ─────────────────────────────────────────────
+
+- Do not use pages/ router — App Router only
+- Do not use the Supabase service role key in any frontend file
+- Do not use select('*') in production — always specify columns
+- Do not use inline fetch() in React components — use React Query hooks
+- Do not hardcode API URLs — always use NEXT_PUBLIC_API_URL env var
+- Do not store Tiptap content as HTML — always store as JSON
+- Do not use bare <img> or <a> tags in Next.js — use next/image and next/link
+- Do not write new DB column types manually — always use generated types
+- Do not skip zod validation on any Express route
+- Do not commit .env or .env.local files
+
+# ─────────────────────────────────────────────
+# 9. PACKAGES IN USE
+# ─────────────────────────────────────────────
+
+Frontend:
+  next, react, react-dom
+  tailwindcss, postcss, autoprefixer
+  framer-motion
+  @tanstack/react-query
+  react-hook-form
+  zod
+  @supabase/supabase-js
+  @tiptap/react, @tiptap/pm, @tiptap/starter-kit
+  @tiptap/extension-image, @tiptap/extension-link
+  @tiptap/extension-placeholder, @tiptap/extension-character-count
+  @tiptap/html
+  next-themes
+  sonner                          # Toast notifications
+
+Backend:
+  express
+  cors
+  helmet
+  express-rate-limit
+  multer
+  zod
+  @supabase/supabase-js
+  dotenv
+  typescript, ts-node, @types/express, @types/node, @types/multer
