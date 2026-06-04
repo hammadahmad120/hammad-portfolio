@@ -36,7 +36,6 @@ A full-stack personal developer portfolio with a public-facing website, a databa
 
 ```
 portfolio/
-├── .cursorrules
 ├── PROJECT.md
 │
 ├── frontend/

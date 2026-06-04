@@ -60,6 +60,11 @@ desktop.ini
 *.swp
 *.swo
 
+# Cursor IDE (local AI config — keep out of the repo)
+.cursor/
+.cursorrules
+.cursorignore
+
 # ─────────────────────────────────────────────
 # TypeScript
 # ─────────────────────────────────────────────
@@ -78,7 +83,3 @@ coverage/
 .cache/
 tmp/
 temp/
-
-
-# MCP config (contains API tokens)
-.cursor/mcp.json

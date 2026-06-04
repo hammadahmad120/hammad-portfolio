@@ -2,7 +2,7 @@
 
 Personal developer portfolio: public site (Next.js 14), admin CMS (Tiptap + Supabase Auth), and Express API backed by Supabase (PostgreSQL, Storage).
 
-Architecture, schema details, and conventions: [PROJECT.md](./PROJECT.md) · Cursor rules: [.cursorrules](./.cursorrules)
+Architecture, schema details, and conventions: [PROJECT.md](./PROJECT.md)
 
 ## What's implemented
 
