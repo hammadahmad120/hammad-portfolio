@@ -12,7 +12,7 @@ export const BlogPostSchema = z.object({
 export type CreateBlogPostInput = z.infer<typeof BlogPostSchema>;
 
 export const UpdateBlogPostSchema = BlogPostSchema.partial().refine(
-  (body) => Object.keys(body).length > 0,
+  (body: Partial<CreateBlogPostInput>) => Object.keys(body).length > 0,
   { message: "At least one field is required" }
 );
 
