@@ -18,14 +18,23 @@ import {
   useUploadImage,
 } from "@/lib/api";
 import { fadeUp, sectionTransition } from "@/lib/motion";
-import { BlogPostSchema, EMPTY_TIPTAP_DOC, type BlogPostInput } from "@/lib/schemas";
+import { formatTagNames, parseTagNames } from "@/lib/parseTagNames";
+import { BlogPostSchema, EMPTY_TIPTAP_DOC } from "@/lib/schemas";
 import { slugify } from "@/lib/slugify";
 
 type BlogEditorFormProps = {
   blogId: string;
 };
 
-type BlogFormValues = BlogPostInput;
+type BlogFormValues = {
+  title: string;
+  slug: string;
+  excerpt: string;
+  cover_url: string;
+  content: Record<string, unknown>;
+  published: boolean;
+  tagNames: string;
+};
 
 export function BlogEditorForm({ blogId }: BlogEditorFormProps) {
   const router = useRouter();
@@ -55,6 +64,7 @@ export function BlogEditorForm({ blogId }: BlogEditorFormProps) {
       cover_url: "",
       content: EMPTY_TIPTAP_DOC as Record<string, unknown>,
       published: false,
+      tagNames: "",
     },
   });
 
@@ -72,6 +82,7 @@ export function BlogEditorForm({ blogId }: BlogEditorFormProps) {
       cover_url: existingBlog.cover_url ?? "",
       content: existingBlog.content as Record<string, unknown>,
       published: existingBlog.published,
+      tagNames: formatTagNames(existingBlog.tags.map((tag) => tag.name)),
     });
     slugManuallyEdited.current = true;
   }, [existingBlog, isNew, reset]);
@@ -116,9 +127,13 @@ export function BlogEditorForm({ blogId }: BlogEditorFormProps) {
 
   const onSubmit = handleSubmit(async (values) => {
     const parsed = BlogPostSchema.safeParse({
-      ...values,
+      title: values.title,
+      slug: values.slug,
       excerpt: values.excerpt || undefined,
       cover_url: values.cover_url?.trim() ? values.cover_url.trim() : null,
+      content: values.content,
+      published: values.published,
+      tags: parseTagNames(values.tagNames),
     });
 
     if (!parsed.success) {
@@ -252,6 +267,19 @@ export function BlogEditorForm({ blogId }: BlogEditorFormProps) {
               Public URL: /blog/{watch("slug") || "…"}
             </p>
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="tagNames">Tags</Label>
+          <Input
+            id="tagNames"
+            placeholder="JavaScript, Node.js, TypeScript"
+            disabled={busy}
+            {...register("tagNames")}
+          />
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            Comma-separated. Used for public blog filtering and post labels.
+          </p>
         </div>
 
         <div className="space-y-2">

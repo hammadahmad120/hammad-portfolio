@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { BlogList } from "@/components/blog/BlogList";
+import { Suspense } from "react";
+import { BlogList, BlogListSkeleton } from "@/components/blog/BlogList";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function BlogListPage() {
-  return <BlogList />;
+  return (
+    <Suspense fallback={<BlogListSkeleton />}>
+      <BlogList />
+    </Suspense>
+  );
 }

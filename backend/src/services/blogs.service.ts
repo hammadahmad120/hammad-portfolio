@@ -3,32 +3,13 @@ import { tagsRepository } from "../repositories/tags.repository";
 import type { ListQueryInput } from "../schemas/blogs.schema";
 import type {
   PaginatedBlogs,
-  PostTagJoin,
   PublicBlogDetail,
   PublicBlogListItem,
   RawDetailRow,
   RawListRow,
-  TagJoin,
 } from "../types/blog.types";
 import { AppError } from "../utils/AppError";
-
-function normalizeTags(
-  blogPostTags: PostTagJoin[] | null | undefined
-): TagJoin[] {
-  if (!blogPostTags?.length) return [];
-
-  const tags: TagJoin[] = [];
-  for (const row of blogPostTags) {
-    const joined = row.tags;
-    if (!joined) continue;
-    if (Array.isArray(joined)) {
-      tags.push(...joined);
-    } else {
-      tags.push(joined);
-    }
-  }
-  return tags;
-}
+import { normalizeTags } from "../utils/blogTags";
 
 function mapListRow(row: RawListRow): PublicBlogListItem {
   return {

@@ -29,7 +29,10 @@ import type {
   PublicBlogTag,
 } from "./publicBlog";
 
-export type AdminBlogPost = Database["public"]["Tables"]["blog_posts"]["Row"];
+export type AdminBlogPost =
+  Database["public"]["Tables"]["blog_posts"]["Row"] & {
+    tags: PublicBlogTag[];
+  };
 
 export type AdminContactSubmission =
   Database["public"]["Tables"]["contact_submissions"]["Row"];
@@ -123,6 +126,14 @@ export function useBlogsInfinite(limit = 12, tag?: string) {
     initialPageParam: 1,
     getNextPageParam: (last) =>
       last.page < last.totalPages ? last.page + 1 : undefined,
+    enabled: Boolean(API_URL),
+  });
+}
+
+export function useTags() {
+  return useQuery({
+    queryKey: ["tags"],
+    queryFn: () => apiFetch<PublicBlogTag[]>("/api/tags"),
     enabled: Boolean(API_URL),
   });
 }

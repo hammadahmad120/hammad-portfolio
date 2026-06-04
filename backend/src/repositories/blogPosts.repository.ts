@@ -1,6 +1,6 @@
 import { getSupabase } from "../lib/supabase";
 import type { Database, Json } from "../types/database.types";
-import type { RawDetailRow, RawListRow } from "../types/blog.types";
+import type { RawAdminPostRow, RawDetailRow, RawListRow } from "../types/blog.types";
 
 export type BlogPostRow = Database["public"]["Tables"]["blog_posts"]["Row"];
 export type BlogPostUpdate =
@@ -8,6 +8,9 @@ export type BlogPostUpdate =
 
 export const BLOG_POST_ADMIN_COLUMNS =
   "id, title, slug, excerpt, cover_url, content, published, published_at, created_at, updated_at" as const;
+
+const ADMIN_WITH_TAGS_COLUMNS =
+  `${BLOG_POST_ADMIN_COLUMNS}, blog_post_tags(tags(name, slug))` as const;
 
 const PUBLIC_LIST_COLUMNS =
   "id, title, slug, excerpt, cover_url, published_at, blog_post_tags(tags(name, slug))" as const;
@@ -62,29 +65,29 @@ export const blogPostsRepository = {
   },
 
   async findAllAdmin(): Promise<{
-    rows: BlogPostRow[];
+    rows: RawAdminPostRow[];
     error: boolean;
   }> {
     const { data, error } = await getSupabase()
       .from("blog_posts")
-      .select(BLOG_POST_ADMIN_COLUMNS)
+      .select(ADMIN_WITH_TAGS_COLUMNS)
       .order("updated_at", { ascending: false });
 
-    return { rows: (data ?? []) as BlogPostRow[], error: Boolean(error) };
+    return { rows: (data ?? []) as RawAdminPostRow[], error: Boolean(error) };
   },
 
   async findByIdAdmin(id: string): Promise<{
-    row: BlogPostRow | null;
+    row: RawAdminPostRow | null;
     error: boolean;
   }> {
     const { data, error } = await getSupabase()
       .from("blog_posts")
-      .select(BLOG_POST_ADMIN_COLUMNS)
+      .select(ADMIN_WITH_TAGS_COLUMNS)
       .eq("id", id)
       .maybeSingle();
 
     return {
-      row: data as BlogPostRow | null,
+      row: data as RawAdminPostRow | null,
       error: Boolean(error),
     };
   },

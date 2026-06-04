@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const tagNameSchema = z.string().trim().min(1).max(100);
+
 export const BlogPostSchema = z.object({
   title: z.string().trim().min(1).max(300),
   slug: z.string().trim().min(1).max(300),
@@ -7,6 +9,7 @@ export const BlogPostSchema = z.object({
   cover_url: z.string().url().optional().nullable(),
   content: z.record(z.string(), z.unknown()),
   published: z.boolean().optional(),
+  tags: z.array(tagNameSchema).max(20).optional(),
 });
 
 export type CreateBlogPostInput = z.infer<typeof BlogPostSchema>;

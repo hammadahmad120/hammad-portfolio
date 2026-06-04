@@ -260,6 +260,23 @@ Paginated list of published posts, newest `published_at` first.
 **Response `400`** — invalid query parameters  
 **Response `500`** — database error
 
+### `GET /api/tags`
+
+List all tags (name + slug), sorted by name. No authentication required.
+
+**Response `200`**
+
+```json
+{
+  "data": [
+    { "name": "JavaScript", "slug": "javascript" },
+    { "name": "TypeScript", "slug": "typescript" }
+  ]
+}
+```
+
+**Response `500`** — database error
+
 ### `GET /api/blogs/:slug`
 
 Single published post by URL slug. Includes Tiptap `content` JSON for rendering.
@@ -366,7 +383,8 @@ List all posts (drafts and published), newest `updated_at` first.
       "published": false,
       "published_at": null,
       "created_at": "2026-06-01T10:00:00.000Z",
-      "updated_at": "2026-06-01T10:00:00.000Z"
+      "updated_at": "2026-06-01T10:00:00.000Z",
+      "tags": [{ "name": "JavaScript", "slug": "javascript" }]
     }
   ]
 }
@@ -397,7 +415,8 @@ Create a new post.
   "excerpt": "Optional summary",
   "cover_url": "https://example.com/cover.jpg",
   "content": { "type": "doc", "content": [{ "type": "paragraph" }] },
-  "published": false
+  "published": false,
+  "tags": ["JavaScript", "Node.js"]
 }
 ```
 
@@ -409,6 +428,7 @@ Create a new post.
 | `excerpt` | no | max 500 chars |
 | `cover_url` | no | valid URL or `null` |
 | `published` | no | default `false`; sets `published_at` when `true` |
+| `tags` | no | Up to 20 tag names; creates tags and links on save |
 
 **Response `201`** — `{ "data": <post> }`  
 **Response `400`** — validation failed  
@@ -424,11 +444,12 @@ Update any subset of fields. At least one field required.
 ```json
 {
   "title": "Updated title",
-  "published": true
+  "published": true,
+  "tags": ["TypeScript"]
 }
 ```
 
-Setting `published` from `false` to `true` sets `published_at` to now. Setting `published` to `false` clears `published_at`.
+Setting `published` from `false` to `true` sets `published_at` to now. Setting `published` to `false` clears `published_at`. Sending `tags` replaces all tags on the post (`[]` clears tags).
 
 **Response `200`** — `{ "data": <post> }`  
 **Response `400`** — invalid id or body  

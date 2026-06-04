@@ -9,6 +9,7 @@ import { adminPostsRouter } from "./routes/admin/posts";
 import { authRouter } from "./routes/auth";
 import { blogsRouter } from "./routes/blogs";
 import { contactRouter } from "./routes/contact";
+import { tagsRouter } from "./routes/tags";
 import { uploadRouter } from "./routes/upload";
 
 const app = express();
@@ -32,6 +33,7 @@ app.use("/api/admin/contact-submissions", adminContactRouter);
 app.use("/api/admin/posts", adminPostsRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/blogs", blogsRouter);
+app.use("/api/tags", tagsRouter);
 app.use("/api/upload", uploadRouter);
 
 app.use((_req, res) => {

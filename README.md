@@ -12,11 +12,13 @@ Architecture, schema details, and conventions: [PROJECT.md](./PROJECT.md) · Cur
 | --- | --- |
 | `/` | Home — hero, skills, experience, education, projects preview |
 | `/projects` | Project grid (content from `frontend/lib/site.ts`) |
-| `/blog` | Published posts with infinite scroll |
+| `/blog` | Published posts with infinite scroll and tag filter (`?tag=<slug>`) |
 | `/blog/[slug]` | Single post — Tiptap JSON rendered via `BlogRenderer`, SEO metadata |
 | `/contact` | Contact form → `POST /api/contact` |
 
 Dark mode (`next-themes`), Framer Motion (with `prefers-reduced-motion`), and per-page metadata are in place.
+
+Blog tags: assign labels in the admin editor; the public `/blog` page loads tags from `GET /api/tags` and filters posts via chip buttons (URL `?tag=<slug>` → `GET /api/blogs?tag=…`).
 
 ### Admin (`/admin`)
 
@@ -24,7 +26,7 @@ Dark mode (`next-themes`), Framer Motion (with `prefers-reduced-motion`), and pe
 | --- | --- |
 | `/admin/login` | Email/password via `POST /api/auth/login` (Supabase Auth + `is_admin` check) |
 | `/admin/blogs` | List, publish toggle, delete posts |
-| `/admin/blogs/[id]` | Create/edit with Tiptap (`Editor.tsx`), cover upload, slug + excerpt |
+| `/admin/blogs/[id]` | Create/edit with Tiptap (`Editor.tsx`), cover upload, slug, excerpt, and comma-separated tags |
 | `/admin/contact` | Paginated contact submissions (filter by last N days) |
 
 Protected routes use `AdminGuard` and a JWT stored in the browser session. Public pages talk to the **Express API only**; Supabase anon client is used for admin login/session, not for public blog reads.
@@ -39,13 +41,14 @@ Layered layout: `routes` → `controllers` → `services` → `repositories`, Zo
 | `POST` | `/api/contact` | — | Live |
 | `GET` | `/api/blogs` | — | Live (`?page=&limit=&tag=`) |
 | `GET` | `/api/blogs/:slug` | — | Live |
+| `GET` | `/api/tags` | — | Live |
 | `POST` | `/api/auth/login` | — | Live |
 | `GET` | `/api/auth/me` | Admin JWT | Live |
 | `PATCH` | `/api/auth/me` | Admin JWT | Live |
 | `GET` | `/api/admin/posts` | Admin JWT | Live |
 | `GET` | `/api/admin/posts/:id` | Admin JWT | Live |
-| `POST` | `/api/admin/posts` | Admin JWT | Live |
-| `PATCH` | `/api/admin/posts/:id` | Admin JWT | Live |
+| `POST` | `/api/admin/posts` | Admin JWT | Live (optional `tags[]` on create) |
+| `PATCH` | `/api/admin/posts/:id` | Admin JWT | Live (optional `tags[]` replaces post tags) |
 | `DELETE` | `/api/admin/posts/:id` | Admin JWT | Live |
 | `GET` | `/api/admin/contact-submissions` | Admin JWT | Live (`?days=&page=&limit=`) |
 | `POST` | `/api/upload` | Admin JWT | Live → `blog-images` bucket |
@@ -139,9 +142,6 @@ cp frontend/types/database.types.ts backend/src/types/database.types.ts
 ## Not yet / partial
 
 - **Deployment** — Vercel (frontend) + Railway/Render (backend) not configured in-repo
-- **Blog tags** — DB + public API filter by `?tag=`; admin UI does not assign tags yet
-- **Legacy `/api/blogs` mutations** — still return `501`; CMS uses `/api/admin/posts`
 - **Email** — `email_queue` table reserved; no Resend integration
-- **Public blog tag filter UI** — API supports it; list page does not expose tag chips/filters yet
 
 For the full feature checklist and build history, see **Current Status** in [PROJECT.md](./PROJECT.md).

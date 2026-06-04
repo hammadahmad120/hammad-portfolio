@@ -212,6 +212,7 @@ created_at  timestamptz default now()
 |---|---|---|
 | GET | /api/blogs | List published posts. Query params: `?page=1&limit=10&tag=javascript` |
 | GET | /api/blogs/:slug | Single post by slug |
+| GET | /api/tags | List all tags (name + slug) |
 | POST | /api/contact | Submit contact form |
 
 ### Admin routes (requires Supabase JWT)

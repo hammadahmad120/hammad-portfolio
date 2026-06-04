@@ -38,3 +38,31 @@ export type PaginatedBlogs = {
   total: number;
   totalPages: number;
 };
+
+export type AdminBlogPost = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  cover_url: string | null;
+  content: Json;
+  published: boolean;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+  tags: TagJoin[];
+};
+
+export type RawAdminPostRow = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  cover_url: string | null;
+  content: Json;
+  published: boolean;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+  blog_post_tags: PostTagJoin[] | null;
+};

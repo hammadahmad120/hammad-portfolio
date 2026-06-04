@@ -4,11 +4,14 @@ import {
   type BlogPostUpdate,
   type Json,
 } from "../../repositories/blogPosts.repository";
+import { tagsRepository } from "../../repositories/tags.repository";
 import type {
   CreateBlogPostInput,
   UpdateBlogPostInput,
 } from "../../schemas/admin/posts.schema";
+import type { AdminBlogPost, RawAdminPostRow } from "../../types/blog.types";
 import { AppError } from "../../utils/AppError";
+import { normalizeTags } from "../../utils/blogTags";
 
 function slugConflictMessage(error: {
   code?: string;
@@ -29,22 +32,50 @@ function resolvePublishedAt(
   return previous.published_at;
 }
 
+function mapAdminRow(row: RawAdminPostRow): AdminBlogPost {
+  const { blog_post_tags, ...post } = row;
+  return {
+    ...post,
+    tags: normalizeTags(blog_post_tags),
+  };
+}
+
+async function syncPostTags(
+  postId: string,
+  tagNames: string[] | undefined
+): Promise<void> {
+  if (tagNames === undefined) return;
+
+  const { tagIds, error } = await tagsRepository.resolveIdsByNames(tagNames);
+  if (error) throw new AppError(500, "Failed to save tags");
+
+  const { error: linkError } = await tagsRepository.replacePostTags(
+    postId,
+    tagIds
+  );
+  if (linkError) throw new AppError(500, "Failed to save tags");
+}
+
+async function loadAdminPost(id: string): Promise<AdminBlogPost> {
+  const { row, error } = await blogPostsRepository.findByIdAdmin(id);
+  if (error) throw new AppError(500, "Failed to fetch post");
+  if (!row) throw new AppError(404, "Post not found");
+  return mapAdminRow(row);
+}
+
 export const adminPostsService = {
-  async listAll(): Promise<BlogPostRow[]> {
+  async listAll(): Promise<AdminBlogPost[]> {
     const { rows, error } = await blogPostsRepository.findAllAdmin();
     if (error) throw new AppError(500, "Failed to list posts");
-    return rows;
+    return rows.map(mapAdminRow);
   },
 
-  async getById(id: string): Promise<BlogPostRow> {
-    const { row, error } = await blogPostsRepository.findByIdAdmin(id);
-    if (error) throw new AppError(500, "Failed to fetch post");
-    if (!row) throw new AppError(404, "Post not found");
-    return row;
+  async getById(id: string): Promise<AdminBlogPost> {
+    return loadAdminPost(id);
   },
 
-  async create(input: CreateBlogPostInput): Promise<BlogPostRow> {
-    const { title, slug, excerpt, cover_url, content, published } = input;
+  async create(input: CreateBlogPostInput): Promise<AdminBlogPost> {
+    const { title, slug, excerpt, cover_url, content, published, tags } = input;
     const isPublished = published ?? false;
     const now = new Date().toISOString();
 
@@ -65,12 +96,17 @@ export const adminPostsService = {
     }
 
     if (!row) throw new AppError(500, "Failed to create post");
-    return row;
+
+    await syncPostTags(row.id, tags ?? []);
+    return loadAdminPost(row.id);
   },
 
-  async update(id: string, input: UpdateBlogPostInput): Promise<BlogPostRow> {
-    const existing = await this.getById(id);
+  async update(id: string, input: UpdateBlogPostInput): Promise<AdminBlogPost> {
+    const existingRow = await blogPostsRepository.findByIdAdmin(id);
+    if (existingRow.error) throw new AppError(500, "Failed to fetch post");
+    if (!existingRow.row) throw new AppError(404, "Post not found");
 
+    const existing = existingRow.row;
     const nextPublished =
       input.published !== undefined ? input.published : existing.published;
 
@@ -86,16 +122,20 @@ export const adminPostsService = {
       update.published_at = resolvePublishedAt(nextPublished, existing);
     }
 
-    const { row, error } = await blogPostsRepository.updateById(id, update);
+    if (Object.keys(update).length > 0) {
+      const { row, error } = await blogPostsRepository.updateById(id, update);
 
-    if (error) {
-      const conflict = slugConflictMessage(error);
-      if (conflict) throw new AppError(409, conflict);
-      throw new AppError(500, "Failed to update post");
+      if (error) {
+        const conflict = slugConflictMessage(error);
+        if (conflict) throw new AppError(409, conflict);
+        throw new AppError(500, "Failed to update post");
+      }
+
+      if (!row) throw new AppError(500, "Failed to update post");
     }
 
-    if (!row) throw new AppError(500, "Failed to update post");
-    return row;
+    await syncPostTags(id, input.tags);
+    return loadAdminPost(id);
   },
 
   async delete(id: string): Promise<{ id: string }> {
