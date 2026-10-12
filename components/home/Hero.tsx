@@ -51,12 +51,13 @@ function FloatingBadge({
 export function Hero() {
   return (
     <section className="relative isolate pt-6 sm:pt-12">
+      {/* Background glow. Blobs stay inside the clip box so no hard edge shows. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-28 bottom-0 -z-10 overflow-hidden"
+        className="pointer-events-none absolute -inset-x-4 -top-28 bottom-0 -z-10 overflow-hidden sm:-inset-x-6 xl:-inset-x-24"
       >
-        <div className="absolute left-[10%] top-0 h-[26rem] w-[36rem] rounded-full bg-accent-400/20 blur-3xl dark:bg-accent-500/10" />
-        <div className="absolute right-[-10%] top-24 h-[22rem] w-[28rem] rounded-full bg-emerald-300/20 blur-3xl dark:bg-accent-700/10" />
+        <div className="absolute left-[12%] top-6 h-[18rem] w-[18rem] rounded-full bg-accent-400/20 blur-3xl sm:h-[24rem] sm:w-[32rem] dark:bg-accent-500/10" />
+        <div className="absolute right-[12%] top-32 hidden h-[20rem] w-[24rem] rounded-full bg-emerald-300/20 blur-3xl sm:block dark:bg-accent-700/10" />
       </div>
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-end">
@@ -168,7 +169,7 @@ export function Hero() {
             icon={Sparkles}
             title="Creator of InstantBot"
             subtitle="AI knowledge-assistant SaaS"
-            className="-left-14 top-[22%] lg:-left-24"
+            className="-left-20 top-[38%] lg:-left-24 lg:top-[22%]"
           />
           <FloatingBadge
             icon={Layers}
