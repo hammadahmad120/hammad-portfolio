@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 255 255 255;
+  --foreground: 23 23 23;
+}
+
+.dark {
+  --background: 10 10 10;
+  --foreground: 237 237 237;
+}
+
+body {
+  @apply bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
