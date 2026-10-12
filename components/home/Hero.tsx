@@ -1,7 +1,7 @@
 import type { ComponentType } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, FileText, Layers, Mail, MapPin, Sparkles } from "lucide-react";
+import { ArrowRight, FileText, Mail, MapPin } from "lucide-react";
 import { GitHubIcon, LinkedInIcon } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
 import { site } from "@/lib/site";
@@ -16,37 +16,6 @@ const socialIcons: Record<string, ComponentType<{ className?: string }>> = {
 /** CSS-driven entrance: visible without JS, staggered via animation-delay. */
 const enter = "animate-fade-up motion-reduce:animate-none";
 const delay = (step: number) => ({ animationDelay: `${step * 90}ms` });
-
-function FloatingBadge({
-  icon: Icon,
-  title,
-  subtitle,
-  className,
-}: {
-  icon: ComponentType<{ className?: string }>;
-  title: string;
-  subtitle: string;
-  className?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "absolute hidden items-center gap-3 rounded-xl border border-white/60 bg-white/85 px-3.5 py-2.5 shadow-lg shadow-zinc-900/10 backdrop-blur-md sm:flex dark:border-zinc-700/60 dark:bg-zinc-900/85 dark:shadow-black/40",
-        className
-      )}
-    >
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-600 text-white dark:bg-accent-500 dark:text-zinc-950">
-        <Icon className="h-4 w-4" />
-      </span>
-      <span className="leading-tight">
-        <span className="block text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-          {title}
-        </span>
-        <span className="block text-xs text-zinc-500 dark:text-zinc-400">{subtitle}</span>
-      </span>
-    </div>
-  );
-}
 
 export function Hero() {
   return (
@@ -163,19 +132,6 @@ export function Hero() {
             priority
             sizes="(max-width: 640px) 300px, (max-width: 1024px) 360px, 500px"
             className="relative block h-auto w-full drop-shadow-[0_24px_36px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_24px_36px_rgba(0,0,0,0.6)]"
-          />
-
-          <FloatingBadge
-            icon={Sparkles}
-            title="Creator of InstantBot"
-            subtitle="AI knowledge-assistant SaaS"
-            className="-left-20 top-[38%] lg:-left-24 lg:top-[22%]"
-          />
-          <FloatingBadge
-            icon={Layers}
-            title="200k+ lines of Next.js"
-            subtitle="Lead frontend, Aqari portal"
-            className="-right-4 bottom-[18%] lg:-right-8"
           />
         </div>
       </div>
