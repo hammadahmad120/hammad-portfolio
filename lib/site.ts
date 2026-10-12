@@ -45,6 +45,8 @@ export type ProjectEntry = {
 export type Stat = {
   value: string;
   label: string;
+  /** Where or how the number was achieved. */
+  context?: string;
 };
 
 export type CaseStudyIcon = "database" | "shield" | "search" | "message" | "chart";
@@ -55,6 +57,11 @@ export type CaseStudySection = {
   body: string;
 };
 
+export type SuiteProduct = {
+  name: string;
+  summary: string;
+};
+
 export type FeaturedProduct = {
   name: string;
   slug: string;
@@ -62,6 +69,7 @@ export type FeaturedProduct = {
   period: string;
   tagline: string;
   description: string;
+  products: SuiteProduct[];
   channels: string[];
   outcomes: string[];
   tech: string[];
@@ -86,10 +94,26 @@ export const site = {
     "React/Next.js and Node.js/NestJS across telecom, government, SaaS, and e-learning. Since early 2026, building AI products end to end — RAG, guardrails, evaluation, and the product surfaces around them. Creator of InstantBot.",
   resumeUrl: "/Hammad_Ahmad_Resume.pdf",
   stats: [
-    { value: "7+", label: "Years of experience" },
-    { value: "4", label: "Engineers led" },
-    { value: "200k+", label: "Lines of Next.js maintained" },
-    { value: "29", label: "Workflows shipped" },
+    {
+      value: "7+",
+      label: "Years in production",
+      context: "Full-stack, web platforms to AI products",
+    },
+    {
+      value: "4M+",
+      label: "Production users, single platform",
+      context: "Lebara telecom · 5 countries (DE, UK, NL, DK, FR)",
+    },
+    {
+      value: "4",
+      label: "Revenue-generating products",
+      context: "Lebara, Educative, Aqari, Zerodocs · millions in monthly transactions combined",
+    },
+    {
+      value: "2",
+      label: "AI products I created and built",
+      context: "InstantBot Knowledge Assistant and Document Scout · validated internally",
+    },
   ] satisfies Stat[],
   tracks: [
     {
@@ -106,8 +130,8 @@ export const site = {
         "Microservices",
       ],
       proof: [
-        "Lead frontend engineer on a 200k+ line Next.js government portal (Aqari, ADRES Sharjah)",
-        "Full-stack features, caching, and security for Lebara's telecom platform",
+        "Own Aqari, ADRES Sharjah's government portal, across web, iOS, and Android — releases, API client, analytics, and the native bridge",
+        "Caching, rate limiting, and live production debugging for Lebara's telecom platform (4M+ users, 5 countries)",
         "Service lead and team lead of four on Afiniti's contact-center microservices",
       ],
       cta: { label: "See experience", href: "#experience" },
@@ -126,8 +150,8 @@ export const site = {
         "Agents, tool calling, MCP",
       ],
       proof: [
-        "Creator of InstantBot, a multi-tenant AI knowledge assistant (web, widget, WhatsApp)",
-        "Document Scout: LLM-driven screening with source-quoted verification, piloted with an HR team",
+        "Created InstantBot: two AI products, Knowledge Assistant and Document Scout, validated internally",
+        "Document Scout: LLM-driven screening with source-quoted verification, used by HR to screen CVs against job requirements",
         "Evaluation framework tracking recall, MRR, hit@k, and latency",
       ],
       cta: { label: "Read the case study", href: "/projects/instantbot" },
@@ -223,8 +247,8 @@ export const site = {
       period: "Oct 2024 – Present",
       project: "Aqari — ADRES Sharjah real-estate digital services portal",
       highlights: [
-        "Lead frontend engineer for a government portal with 29 real-estate workflows (web plus ADRES iOS/Android apps): production support, enhancements, and feature delivery in a 200k+ line Next.js/TypeScript codebase.",
-        "Took over the iOS and Android apps after the mobile team was dissolved; built the typed web-to-native webview bridge (navigation, downloads, platform detection) and manage native releases.",
+        "Own the delivery of a government portal with 29 real-estate workflows across web and the ADRES iOS/Android apps: production support, enhancements, feature delivery, and releases on a 200k+ line Next.js/TypeScript codebase.",
+        "Own the frontend across all three channels — web, iOS, and Android — after taking over the native apps when the mobile team was dissolved; built the typed web-to-native webview bridge (navigation, downloads, platform detection) and manage native releases.",
         "Designed a GA4 analytics layer, hardened the shared API client (token refresh, SSO re-auth, error mapping), enforced pixel-perfect UI via a shared component library, and built an AI-assisted code generation workflow with Jira and Figma.",
       ],
       technologies: [
@@ -241,10 +265,11 @@ export const site = {
       role: "Senior Software Engineer",
       location: "Lahore",
       period: "Feb 2023 – Sep 2024",
-      project: "Lebara — telecom platform",
+      project: "Lebara — telecom platform, 4M+ users across Germany, the UK, the Netherlands, Denmark, and France",
       highlights: [
-        "Built full-stack features from scratch, integrating third-party and internal services with architecture reviews, docs, and unit tests.",
-        "Improved performance with Redis caching; added rate limiting, reCAPTCHA v3, and App Insights logging and usage analytics.",
+        "Built full-stack features for a platform serving millions of live users and absorbing traffic spikes of millions of requests within seconds, integrating third-party and internal services with architecture reviews, docs, and unit tests.",
+        "Stopped brute-force attacks with a custom Redis-backed rate limiter and reCAPTCHA v3; cached slow-changing data in Redis to cut API latency.",
+        "Debugged live production issues with Azure App Insights and built the usage analytics and event logging on top of it.",
       ],
       technologies: [
         "React",
@@ -335,13 +360,25 @@ export const site = {
     slug: "instantbot",
     role: "Creator",
     period: "Mar 2026 – Present",
-    tagline: "AI knowledge assistant & document intelligence SaaS",
+    tagline: "AI knowledge assistant & document intelligence suite",
     description:
-      "Multi-tenant SaaS that turns a company's documents into a grounded, citation-backed AI assistant across web chat, an embeddable widget, and WhatsApp — with Document Scout for LLM-driven document screening and ranking. Piloted with an HR team to screen CVs against job requirements.",
+      "Multi-tenant AI suite with two products built end to end: Knowledge Assistant turns a company's documents into a grounded, citation-backed assistant across web chat, an embeddable widget, and WhatsApp; Document Scout screens and ranks documents against requirements with source-quoted verification. Validated internally, with HR using Document Scout to screen CVs.",
+    products: [
+      {
+        name: "Knowledge Assistant",
+        summary:
+          "Ask questions over company documents and get grounded answers with citations — on web chat, an embeddable widget, and WhatsApp.",
+      },
+      {
+        name: "Document Scout",
+        summary:
+          "Give it requirements and a set of documents; it extracts fields, verifies them with quoted sources, and returns an explainable ranked shortlist.",
+      },
+    ],
     channels: ["Web chat", "Embeddable widget", "WhatsApp Business"],
     outcomes: [
       "Grounded, citation-backed answers with guardrails that prevent hallucinations and cut cost",
-      "Document Scout: explainable, source-quoted shortlists for screening documents against requirements",
+      "Explainable, source-quoted shortlists for screening documents against requirements",
       "Secure multi-tenancy with row-level security, rate limits, and quotas across three channels",
     ],
     tech: [
@@ -373,7 +410,7 @@ export const site = {
         {
           title: "Document Scout",
           icon: "search",
-          body: "LLM-driven requirement and field extraction with source-quoted verification produces explainable, ranked shortlists. An HR team used it to screen CVs against job requirements.",
+          body: "LLM-driven requirement and field extraction with source-quoted verification produces explainable, ranked shortlists. Validated internally, with HR using it to screen CVs against job requirements.",
         },
         {
           title: "Channels and tenancy",

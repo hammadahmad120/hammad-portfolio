@@ -116,6 +116,21 @@ export function HomePage() {
               <p className="leading-relaxed text-zinc-600 dark:text-zinc-400">
                 {featuredProduct.description}
               </p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {featuredProduct.products.map((product) => (
+                  <div
+                    key={product.name}
+                    className="rounded-xl border border-accent-200/70 bg-white/70 p-4 dark:border-accent-900/50 dark:bg-zinc-950/40"
+                  >
+                    <h3 className="font-display text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+                      {product.name}
+                    </h3>
+                    <p className="mt-1.5 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+                      {product.summary}
+                    </p>
+                  </div>
+                ))}
+              </div>
               <ul className="space-y-2.5 text-sm text-zinc-700 dark:text-zinc-300">
                 {featuredProduct.outcomes.map((outcome) => (
                   <li key={outcome} className="flex gap-3">

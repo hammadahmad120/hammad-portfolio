@@ -143,12 +143,19 @@ export function Hero() {
         )}
         style={delay(4)}
       >
-        {site.stats.map(({ value, label }) => (
+        {site.stats.map(({ value, label, context }) => (
           <div
             key={label}
-            className="flex flex-col-reverse gap-1 bg-white px-5 py-5 dark:bg-zinc-950"
+            className="flex flex-col-reverse justify-end gap-1 bg-white px-5 py-5 dark:bg-zinc-950"
           >
-            <dt className="text-sm text-zinc-500 dark:text-zinc-400">{label}</dt>
+            <dt className="text-sm text-zinc-700 dark:text-zinc-300">
+              <span className="block font-medium">{label}</span>
+              {context ? (
+                <span className="mt-0.5 block text-xs text-zinc-500 dark:text-zinc-400">
+                  {context}
+                </span>
+              ) : null}
+            </dt>
             <dd className="font-display text-3xl font-bold tracking-tight">{value}</dd>
           </div>
         ))}
