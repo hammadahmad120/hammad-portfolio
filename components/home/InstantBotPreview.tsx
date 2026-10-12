@@ -10,7 +10,7 @@ export function InstantBotPreview() {
       <div className="absolute -inset-4 -z-10 rounded-3xl bg-accent-400/20 blur-2xl dark:bg-accent-500/10" />
       <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-950">
         <div className="flex items-center gap-2 border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
-          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-accent-600 text-white dark:bg-accent-500 dark:text-zinc-950">
+          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-accent-700 text-white dark:bg-accent-500 dark:text-zinc-950">
             <Bot className="h-3.5 w-3.5" />
           </span>
           <span className="text-sm font-semibold">InstantBot</span>
@@ -21,7 +21,7 @@ export function InstantBotPreview() {
         </div>
 
         <div className="space-y-3 px-4 py-4 text-sm">
-          <div className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm bg-accent-600 px-3.5 py-2 text-white dark:bg-accent-500 dark:text-zinc-950">
+          <div className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm bg-accent-700 px-3.5 py-2 text-white dark:bg-accent-500 dark:text-zinc-950">
             What is the notice period for contractors?
           </div>
           <div className="max-w-[90%] space-y-2.5 rounded-2xl rounded-bl-sm bg-zinc-100 px-3.5 py-2.5 text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">

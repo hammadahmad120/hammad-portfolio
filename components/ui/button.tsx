@@ -7,7 +7,7 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-accent-600 text-white shadow-sm hover:bg-accent-700 dark:bg-accent-500 dark:text-zinc-950 dark:hover:bg-accent-400",
+          "bg-accent-700 text-white shadow-sm hover:bg-accent-800 dark:bg-accent-500 dark:text-zinc-950 dark:hover:bg-accent-400",
         outline:
           "border border-zinc-300 bg-white/60 hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900/40 dark:hover:border-zinc-600 dark:hover:bg-zinc-900",
         ghost: "hover:bg-zinc-100 dark:hover:bg-zinc-900",

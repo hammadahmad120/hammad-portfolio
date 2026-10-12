@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     title: `${site.shortName} — ${site.title}`,
     description: site.headline,
     type: "website",
+    images: ["/opengraph-image"],
   },
 };
 

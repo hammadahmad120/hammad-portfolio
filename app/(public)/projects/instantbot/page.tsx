@@ -81,6 +81,7 @@ export const metadata: Metadata = {
     type: "article",
     title: `${product.name} — ${product.tagline}`,
     description: product.description,
+    images: ["/opengraph-image"],
   },
 };
 
@@ -171,7 +172,7 @@ export default function InstantBotCaseStudyPage() {
           {walkthrough.map((step, index) => (
             <li key={step.src} className="space-y-4">
               <div className="flex gap-4">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-600 font-display text-sm font-semibold text-white dark:bg-accent-500 dark:text-zinc-950">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-700 font-display text-sm font-semibold text-white dark:bg-accent-500 dark:text-zinc-950">
                   {index + 1}
                 </span>
                 <div className="space-y-1">

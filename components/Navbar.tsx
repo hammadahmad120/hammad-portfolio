@@ -38,7 +38,7 @@ export function Navbar() {
           className="flex items-center gap-2.5 font-display text-sm font-semibold tracking-tight"
         >
           <span
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-600 text-xs font-bold text-white dark:bg-accent-500 dark:text-zinc-950"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-700 text-xs font-bold text-white dark:bg-accent-500 dark:text-zinc-950"
             aria-hidden="true"
           >
             HA
