@@ -1,13 +1,5 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Award,
-  Check,
-  GraduationCap,
-  Languages,
-  Mail,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, Check, GraduationCap, Mail, Sparkles } from "lucide-react";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -293,10 +285,10 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Education & achievements */}
-      <section className="grid gap-6 md:grid-cols-2">
-        <Reveal className="h-full">
-          <div className="h-full rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/40">
+      {/* Education */}
+      <section>
+        <Reveal>
+          <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/40">
             <div className="flex items-center gap-3">
               <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent-50 text-accent-700 dark:bg-accent-950/50 dark:text-accent-400">
                 <GraduationCap className="h-5 w-5" aria-hidden="true" />
@@ -320,40 +312,6 @@ export function HomePage() {
                     aria-hidden="true"
                   />
                   {honor}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Reveal>
-        <Reveal delay={0.1} className="h-full">
-          <div className="h-full rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/40">
-            <div className="flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent-50 text-accent-700 dark:bg-accent-950/50 dark:text-accent-400">
-                <Award className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <h3 className="font-display text-lg font-semibold">Achievements</h3>
-            </div>
-            <ul className="mt-4 space-y-1.5 text-sm text-zinc-600 dark:text-zinc-400">
-              {site.achievements.map((item) => (
-                <li key={item} className="flex gap-2">
-                  <Check
-                    className="mt-0.5 h-4 w-4 shrink-0 text-accent-600 dark:text-accent-400"
-                    aria-hidden="true"
-                  />
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6 flex items-center gap-2 text-sm font-medium text-zinc-900 dark:text-zinc-50">
-              <Languages className="h-4 w-4 text-zinc-500" aria-hidden="true" />
-              Languages
-            </div>
-            <ul className="mt-2 flex flex-wrap gap-2">
-              {site.languages.map(({ name, level }) => (
-                <li key={name}>
-                  <Badge>
-                    {name} · {level}
-                  </Badge>
                 </li>
               ))}
             </ul>

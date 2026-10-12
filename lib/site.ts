@@ -344,17 +344,8 @@ export const site = {
     degree: "BS (Hons.) Computer Science",
     period: "2015 – 2019",
     cgpa: "3.89",
-    honors: ["2nd in class", "Principal's List in all 8 semesters"],
+    honors: ["Silver medalist"],
   },
-  achievements: [
-    "Runner-up, Softec'19 (FAST) — FYP software competition",
-    "Runner-up, COMPPEC'19 (NUST) — FYP software competition",
-  ],
-  languages: [
-    { name: "Urdu", level: "Native" },
-    { name: "Punjabi", level: "Native" },
-    { name: "English", level: "Professional" },
-  ],
   featuredProduct: {
     name: "InstantBot",
     slug: "instantbot",
