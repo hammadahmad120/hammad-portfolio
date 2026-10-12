@@ -4,7 +4,7 @@ import { getSiteUrl } from "@/lib/site";
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = getSiteUrl();
 
-  return ["", "/projects", "/contact"].map((path) => ({
+  return ["", "/projects", "/projects/instantbot", "/contact"].map((path) => ({
     url: `${base}${path}`,
     lastModified: new Date(),
   }));

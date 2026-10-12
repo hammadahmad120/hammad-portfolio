@@ -3,11 +3,13 @@ import { HomePage } from "@/components/home/HomePage";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Home",
-  description: `${site.shortName} — ${site.title}. ${site.tagline}`,
+  title: {
+    absolute: `${site.shortName} — ${site.title}`,
+  },
+  description: `${site.headline} ${site.tagline}`,
   openGraph: {
-    title: `${site.shortName} | ${site.title}`,
-    description: site.tagline,
+    title: `${site.shortName} — ${site.title}`,
+    description: site.headline,
     type: "website",
   },
 };

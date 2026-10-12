@@ -14,6 +14,22 @@ Next.js 14.2 · React 18 · TypeScript (strict) · Tailwind CSS 3 · Framer Moti
 next-themes (dark mode) · react-hook-form + Zod 4 (contact form) · sonner (toasts) ·
 lucide-react (icons) · class-variance-authority + tailwind-merge (`cn()` helper).
 
+## Design system
+
+- **Accent colour**: `accent` = Tailwind `teal` (aliased in `tailwind.config.ts`).
+  Use `accent-600` on light, `accent-400/500` on dark. Everything else is `zinc`.
+- **Fonts**: Inter (`font-sans`, body), Geist (`font-display`, headings; local file
+  in `app/fonts/`), Geist Mono (`font-mono`, dates and pipeline labels).
+- **Brand icons**: Lucide 1.x has none; GitHub and LinkedIn are inline SVGs in
+  `components/icons.tsx`.
+- **Motion**: the hero uses CSS keyframes (`animate-fade-up` + `animationDelay`) so it
+  paints without JS. Below-the-fold sections use `components/home/Reveal.tsx`
+  (Framer `whileInView`, once). Both honour reduced motion.
+- **Generated assets**: `app/opengraph-image.tsx`, `app/icon.tsx`, `app/apple-icon.tsx`
+  are rendered with `next/og`; there is no static favicon.
+- **Résumé**: `public/Hammad_Ahmad_Resume.pdf`, linked via `site.resumeUrl`. Replace the
+  file to update it.
+
 ## Layout
 
 ```
@@ -21,17 +37,22 @@ app/
   layout.tsx            Root layout: Inter font, metadataBase, Providers
   (public)/layout.tsx   Navbar + <main> container
   (public)/page.tsx     Home (renders components/home/HomePage.tsx)
-  (public)/projects/    Projects grid
+  (public)/projects/    Featured product card + project grid
+  (public)/projects/instantbot/  InstantBot case study (content: site.featuredProduct)
   (public)/contact/     Email link; ContactForm only when email is configured
   api/contact/route.ts  POST → sends email via Resend REST API (no SDK)
-  sitemap.ts, robots.ts, not-found.tsx
+  sitemap.ts, robots.ts, not-found.tsx, opengraph-image.tsx, icon.tsx, apple-icon.tsx
 components/
-  home/                 HomePage, SectionHeading
+  home/                 HomePage (server), Hero, InstantBotPreview (mock chat UI),
+                        Reveal (scroll-in wrapper), SectionHeading
   ui/                   badge, button (cva + buttonVariants), card, input, label, textarea
-  ContactForm.tsx, Navbar.tsx, ProjectCard.tsx, providers.tsx
+  ContactForm.tsx, Navbar.tsx (sticky, theme toggle, mobile menu), Footer.tsx,
+  ThemeToggle.tsx, ProjectCard.tsx, icons.tsx, providers.tsx
 lib/
-  site.ts               ALL profile content (name, skills, experience, education,
-                        projects, social links) + getSiteUrl()
+  site.ts               ALL profile content: headline, availability, stats, skills
+                        (grouped), experience, education, featuredProduct (InstantBot
+                        + case study copy), projects, social links, resumeUrl,
+                        getSiteUrl()
   schemas.ts            ContactSchema (Zod) — shared by form and API route
   contact.ts            isContactFormConfigured()
   motion.ts             Framer Motion variants: fadeUp, staggerContainer, sectionTransition
@@ -47,8 +68,18 @@ npm run lint
 npm run typecheck   # tsc --noEmit
 ```
 
-If `tsc` reports errors under `.next/types/` for routes that no longer exist, delete
-`.next/` and re-run (stale generated types).
+**Never run `next build` or delete `.next/` while the user's `next dev` server may be
+running** — dev and build share `.next/`, and clobbering it breaks the dev server
+("Cannot find module './NNN.js'") until it is restarted. For verification builds use a
+separate output dir:
+
+```bash
+NEXT_DIST_DIR=.next-build npm run build
+NEXT_DIST_DIR=.next-build npx next start -p 3100
+```
+
+If `tsc` reports errors under `.next/types/` for routes that no longer exist, that is
+stale generated types; ask the user to restart dev rather than deleting `.next/`.
 
 ## Environment (all optional, see .env.example)
 
@@ -57,6 +88,29 @@ If `tsc` reports errors under `.next/types/` for routes that no longer exist, de
   `/api/contact` sends email. Otherwise the page shows only the mailto button and the
   route returns 503. `CONTACT_FROM_EMAIL` must be on a Resend-verified domain.
 - Never commit `.env` or `.env*.local`.
+
+## Positioning (important — settled after three iterations)
+
+Hammad has **7+ years of full-stack web experience** and, **since early 2026**, has
+been building **AI-powered products** (InstantBot). The portfolio must work for three
+audiences at once: pure web roles, web + AI roles, and AI product roles.
+
+Rejected framings: "I build production AI applications" (reads as pure AI dev);
+"web platforms and the AI features that ship with them" (reads as web dev adding AI);
+"AI product engineer, end to end" (overstates AI tenure, hides web depth).
+
+Accepted structure (do not collapse it back into a single-identity headline):
+- Hero headline: "7+ years shipping production web platforms. Now building AI-powered
+  products on top of that." Title: "Senior Full-Stack Engineer · Building AI-powered
+  products". AI phrase gets the gradient highlight.
+- "Two tracks, one engineer" section (`site.tracks`): Web platforms (7+ years) and
+  AI-powered products (Since 2026) as equal cards, each with proof and a link.
+- Home order: Hero, Two tracks, InstantBot spotlight, Experience (`#experience`),
+  Skills, Projects, Education, CTA.
+- Skills order: Frontend, Backend & Data, AI / LLM (badge "Current focus"), Tools.
+- Projects page groups: "AI-powered products" (featured InstantBot) then "Web
+  platforms & tools" (Aqari first). `ProjectEntry.category` drives the grouping.
+- Describe AI tenure honestly ("since 2026"); never claim it as the job title.
 
 ## Conventions
 

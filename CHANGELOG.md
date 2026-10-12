@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-10-12 — Visual redesign
+
+- Teal accent colour, Geist display font, dot-grid and glow backgrounds.
+- New hero: availability pill, headline, résumé download, social icon buttons,
+  stats strip. CSS keyframe entrance so it paints without JavaScript.
+- Sticky navbar with theme toggle and mobile menu; new footer.
+- InstantBot spotlight section with a mock chat UI, and a dedicated case study page
+  at `/projects/instantbot`.
+- Skills as grouped cards, experience as a timeline with a "Current" marker,
+  project cards with Live/Code links, restyled education and CTA sections.
+- Scroll-in reveals (`whileInView`), generated Open Graph image and favicons.
+- Content updated from the October 2026 résumé.
+
 ## 2026-10-12 — Next.js-only rewrite
 
 Restructured the project from a monorepo (Next.js frontend + Express API +

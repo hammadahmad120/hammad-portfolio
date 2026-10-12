@@ -6,6 +6,17 @@ export type SocialLink = {
 export type SkillGroup = {
   name: string;
   items: string[];
+  /** Short label shown on the card, e.g. "Current focus". */
+  badge?: string;
+};
+
+export type Track = {
+  name: string;
+  period: string;
+  pitch: string;
+  items: string[];
+  proof: string[];
+  cta: { label: string; href: string };
 };
 
 export type ExperienceEntry = {
@@ -18,28 +29,110 @@ export type ExperienceEntry = {
   technologies: string[];
 };
 
+export type ProjectCategory = "ai" | "web";
+
 export type ProjectEntry = {
   title: string;
   description: string;
+  category: ProjectCategory;
+  /** Live URL. */
   href?: string;
+  /** Source repository URL. */
+  github?: string;
   tags: string[];
+};
+
+export type Stat = {
+  value: string;
+  label: string;
+};
+
+export type CaseStudyIcon = "database" | "shield" | "search" | "message" | "chart";
+
+export type CaseStudySection = {
+  title: string;
+  icon: CaseStudyIcon;
+  body: string;
+};
+
+export type FeaturedProduct = {
+  name: string;
+  slug: string;
+  role: string;
+  period: string;
+  tagline: string;
+  description: string;
+  channels: string[];
+  outcomes: string[];
+  tech: string[];
+  caseStudy: {
+    problem: string;
+    sections: CaseStudySection[];
+  };
 };
 
 export const site = {
   name: "Muhammad Hammad Ahmad",
   shortName: "Hammad Ahmad",
-  title: "Senior Software Engineer (Full Stack · AI Applications)",
+  title: "Senior Full-Stack Engineer · Building AI-powered products",
   location: "Lahore, Pakistan",
   email: "hammad.shahid120@gmail.com",
   phone: "+923244112700",
   yearsExperience: "7+",
+  availability: "Open to senior full-stack & AI product roles",
+  headline:
+    "7+ years shipping production web platforms. Now building AI-powered products on top of that.",
   tagline:
-    "Full-stack engineer building production AI applications and scalable web platforms with TypeScript, React/Next.js, and Node.js/NestJS.",
-  summary: [
-    "7+ years building production AI applications — RAG, hybrid search, guardrails, LLM evaluation — and scalable web platforms using TypeScript, React/Next.js, and Node.js/NestJS.",
-    "Creator of InstantBot, a multi-tenant AI knowledge-assistant SaaS piloted with an HR team.",
-    "Led a team of four engineers and owned services end to end; currently extending into AI agents, tool calling, and MCP.",
-  ],
+    "React/Next.js and Node.js/NestJS across telecom, government, SaaS, and e-learning. Since early 2026, building AI products end to end — RAG, guardrails, evaluation, and the product surfaces around them. Creator of InstantBot.",
+  resumeUrl: "/Hammad_Ahmad_Resume.pdf",
+  stats: [
+    { value: "7+", label: "Years of experience" },
+    { value: "4", label: "Engineers led" },
+    { value: "200k+", label: "Lines of Next.js maintained" },
+    { value: "29", label: "Workflows shipped" },
+  ] satisfies Stat[],
+  tracks: [
+    {
+      name: "Web platforms",
+      period: "7+ years",
+      pitch:
+        "Production React/Next.js front-ends and Node.js/NestJS services, from architecture and data modelling to deployment and support.",
+      items: [
+        "React / Next.js",
+        "Node.js / NestJS",
+        "TypeScript",
+        "PostgreSQL / Redis",
+        "GraphQL / REST",
+        "Microservices",
+      ],
+      proof: [
+        "Lead frontend engineer on a 200k+ line Next.js government portal (Aqari, ADRES Sharjah)",
+        "Full-stack features, caching, and security for Lebara's telecom platform",
+        "Service lead and team lead of four on Afiniti's contact-center microservices",
+      ],
+      cta: { label: "See experience", href: "#experience" },
+    },
+    {
+      name: "AI-powered products",
+      period: "Since 2026",
+      pitch:
+        "AI applications built end to end: retrieval, grounding and guardrails, evaluation, and the product people actually use.",
+      items: [
+        "RAG / hybrid retrieval",
+        "pgvector",
+        "Grounding & guardrails",
+        "LLM evaluation",
+        "Gemini / Groq APIs",
+        "Agents, tool calling, MCP",
+      ],
+      proof: [
+        "Creator of InstantBot, a multi-tenant AI knowledge assistant (web, widget, WhatsApp)",
+        "Document Scout: LLM-driven screening with source-quoted verification, piloted with an HR team",
+        "Evaluation framework tracking recall, MRR, hit@k, and latency",
+      ],
+      cta: { label: "Read the case study", href: "/projects/instantbot" },
+    },
+  ] satisfies Track[],
   social: [
     {
       label: "GitHub",
@@ -55,24 +148,6 @@ export const site = {
     },
   ] satisfies SocialLink[],
   skills: [
-    {
-      name: "AI / LLM",
-      items: [
-        "RAG",
-        "Hybrid search",
-        "pgvector",
-        "Embeddings",
-        "Reranking",
-        "Prompt engineering",
-        "Gemini API",
-        "Groq API",
-        "Grounding & guardrails",
-        "LLM evaluation",
-        "Structured outputs",
-        "Claude Code",
-        "MCP",
-      ],
-    },
     {
       name: "Frontend",
       items: [
@@ -101,6 +176,25 @@ export const site = {
         "Sequelize",
         "Supabase",
         "Python",
+      ],
+    },
+    {
+      name: "AI / LLM",
+      badge: "Current focus",
+      items: [
+        "RAG",
+        "Hybrid search",
+        "pgvector",
+        "Embeddings",
+        "Reranking",
+        "Prompt engineering",
+        "Gemini API",
+        "Groq API",
+        "Grounding & guardrails",
+        "LLM evaluation",
+        "Structured outputs",
+        "Claude Code",
+        "MCP",
       ],
     },
     {
@@ -236,50 +330,104 @@ export const site = {
     { name: "Punjabi", level: "Native" },
     { name: "English", level: "Professional" },
   ],
+  featuredProduct: {
+    name: "InstantBot",
+    slug: "instantbot",
+    role: "Creator",
+    period: "Mar 2026 – Present",
+    tagline: "AI knowledge assistant & document intelligence SaaS",
+    description:
+      "Multi-tenant SaaS that turns a company's documents into a grounded, citation-backed AI assistant across web chat, an embeddable widget, and WhatsApp — with Document Scout for LLM-driven document screening and ranking. Piloted with an HR team to screen CVs against job requirements.",
+    channels: ["Web chat", "Embeddable widget", "WhatsApp Business"],
+    outcomes: [
+      "Grounded, citation-backed answers with guardrails that prevent hallucinations and cut cost",
+      "Document Scout: explainable, source-quoted shortlists for screening documents against requirements",
+      "Secure multi-tenancy with row-level security, rate limits, and quotas across three channels",
+    ],
+    tech: [
+      "Node.js",
+      "TypeScript",
+      "Express",
+      "Next.js",
+      "Supabase",
+      "pgvector",
+      "Python",
+      "Gemini API",
+      "Groq API",
+      "WhatsApp Business API",
+    ],
+    caseStudy: {
+      problem:
+        "Companies keep policies, contracts, and CVs in piles of documents. Teams need answers they can trust, with the source attached — not a chatbot that improvises.",
+      sections: [
+        {
+          title: "Retrieval pipeline",
+          icon: "database",
+          body: "Documents go through parsing, OCR, and chunking, then into pgvector embeddings. Retrieval is hybrid — vector plus keyword — with a reranking stage, so the context sent to the model is small and relevant.",
+        },
+        {
+          title: "Grounding and guardrails",
+          icon: "shield",
+          body: "Evidence scoring, tiered prompts, refusal handling, and fallbacks make sure the assistant answers only from the documents it has, declines when evidence is weak, and keeps token cost under control.",
+        },
+        {
+          title: "Document Scout",
+          icon: "search",
+          body: "LLM-driven requirement and field extraction with source-quoted verification produces explainable, ranked shortlists. An HR team used it to screen CVs against job requirements.",
+        },
+        {
+          title: "Channels and tenancy",
+          icon: "message",
+          body: "Streaming web chat, an embeddable widget, and WhatsApp Business run on one multi-tenant core with row-level security, rate limits, and per-tenant quotas.",
+        },
+        {
+          title: "Evaluation loop",
+          icon: "chart",
+          body: "An evaluation framework tracks recall, MRR, hit@k, and latency, with human-in-the-loop analytics feeding back into prompt and retrieval tuning.",
+        },
+      ],
+    },
+  } satisfies FeaturedProduct,
   projects: [
     {
-      title: "InstantBot — AI Knowledge Assistant & Document Intelligence SaaS",
+      title: "Aqari — ADRES Sharjah real-estate portal",
       description:
-        "Multi-tenant SaaS that turns a company's documents into a grounded, citation-backed AI assistant (web, widget, WhatsApp). End-to-end RAG with pgvector hybrid retrieval and reranking, guardrails that prevent hallucinations, Document Scout for LLM-driven document screening, and an LLM evaluation framework. Piloted with an HR team to screen CVs.",
-      tags: [
-        "Node.js",
-        "TypeScript",
-        "Next.js",
-        "Supabase",
-        "pgvector",
-        "Python",
-        "Gemini API",
-        "Groq API",
-        "WhatsApp Business API",
-      ],
+        "Government digital services portal with 29 real-estate workflows across web and native apps. Lead frontend engineer: typed web-to-native bridge, GA4 analytics layer, hardened API client, shared component library.",
+      category: "web",
+      tags: ["Next.js 14", "React 18", "TypeScript", "Redux Toolkit", "Material UI"],
     },
     {
       title: "Minhaj Dispensary Management System",
+      category: "web",
       description:
         "End-to-end system for a welfare organization — database design, backend APIs, and admin UI built pro bono.",
       tags: ["React.js", "Node.js", "Material UI", "PostgreSQL", "Sequelize"],
     },
     {
       title: "Node.js REST API Boilerplate",
+      category: "web",
       description:
         "Production-ready starter with 3-layer architecture, generic exception handling, and CRUD APIs.",
-      href: "https://github.com/hammadahmad120",
+      github: "https://github.com/hammadahmad120",
       tags: ["Node.js", "Express", "TypeScript", "PostgreSQL"],
     },
     {
       title: "Zerodocs.com",
+      category: "web",
       description:
         "Document collaboration SPA with auth, bulk S3 uploads, sharing, notifications, and chat.",
       tags: ["React.js", "AWS S3", "Bootstrap"],
     },
     {
       title: "Valorx Chrome Extension",
+      category: "web",
       description:
         "Salesforce bulk editor with AG Grid, spreadsheet-style editing, custom version control, and direct Salesforce sync.",
       tags: ["React.js", "TypeScript", "AG Grid", "Salesforce"],
     },
     {
       title: "Audionic Obstacle Detector",
+      category: "web",
       description:
         "Wearable aid for blind users — obstacle detection, distance calculation, and audio guidance using CV/ML.",
       tags: ["OpenCV", "Python", "YOLO", "Machine Learning"],

@@ -9,13 +9,16 @@ straight to Vercel.
 | Route | Description |
 | --- | --- |
 | `/` | Home — hero, about, skills, experience, education, featured projects |
-| `/projects` | Project grid (content in `lib/site.ts`) |
+| `/projects` | Featured product plus project grid (content in `lib/site.ts`) |
+| `/projects/instantbot` | InstantBot case study |
 | `/contact` | Email link, plus a contact form when email delivery is configured |
 | `/api/contact` | `POST` — sends the contact form by email via Resend |
 | `/sitemap.xml`, `/robots.txt` | Generated from the site URL |
+| `/opengraph-image`, `/icon`, `/apple-icon` | Generated with `next/og` |
 
-Dark mode (`next-themes`), Framer Motion with `prefers-reduced-motion`, and per-page
-metadata are in place.
+Dark mode with a toggle (`next-themes`), scroll-in animations that honour
+`prefers-reduced-motion`, per-page metadata, and a generated Open Graph image are in
+place. The résumé is served from `public/Hammad_Ahmad_Resume.pdf`.
 
 ## Project layout
 
@@ -34,7 +37,10 @@ lib/
 
 ## Editing content
 
-- **Profile, skills, experience, projects** — edit `lib/site.ts`.
+- **Profile, headline, stats, skills, experience, projects, InstantBot case study** —
+  edit `lib/site.ts`.
+- **Résumé** — replace `public/Hammad_Ahmad_Resume.pdf`.
+- **Accent colour** — `accent` in `tailwind.config.ts` (currently Tailwind `teal`).
 
 ## Development
 

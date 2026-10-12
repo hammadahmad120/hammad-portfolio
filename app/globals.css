@@ -3,21 +3,32 @@
 @tailwind utilities;
 
 :root {
-  --background: 255 255 255;
-  --foreground: 23 23 23;
+  --dot: 212 212 216;
 }
 
 .dark {
-  --background: 10 10 10;
-  --foreground: 237 237 237;
+  --dot: 39 39 42;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   @apply bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50;
 }
 
+::selection {
+  @apply bg-accent-200 text-zinc-900 dark:bg-accent-500/40 dark:text-zinc-50;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .bg-dot-grid {
+    background-image: radial-gradient(rgb(var(--dot)) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 }
