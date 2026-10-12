@@ -82,12 +82,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-zinc-200 pt-6 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800">
-          <p>
-            © {year} {site.name}. All rights reserved.
-          </p>
-          <p>Built with Next.js and Tailwind CSS. Deployed on Vercel.</p>
-        </div>
+        <p className="mt-10 border-t border-zinc-200 pt-6 text-xs text-zinc-500 dark:border-zinc-800">
+          © {year} {site.name}. All rights reserved.
+        </p>
       </div>
     </footer>
   );

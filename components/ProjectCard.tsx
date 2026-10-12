@@ -3,8 +3,15 @@ import { GitHubIcon } from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
 import type { ProjectEntry } from "@/lib/site";
 
-export function ProjectCard({ title, description, href, github, tags }: ProjectEntry) {
-  const hasLinks = Boolean(href || github);
+export function ProjectCard({
+  title,
+  description,
+  href,
+  github,
+  note,
+  tags,
+}: ProjectEntry) {
+  const hasLinks = Boolean(href || github || note);
 
   return (
     <article className="flex h-full flex-col rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-accent-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900/40 dark:hover:border-accent-800">
@@ -50,6 +57,11 @@ export function ProjectCard({ title, description, href, github, tags }: ProjectE
               <GitHubIcon className="h-3.5 w-3.5" />
               Code
             </a>
+          ) : null}
+          {note ? (
+            <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400">
+              {note}
+            </span>
           ) : null}
         </div>
       ) : null}

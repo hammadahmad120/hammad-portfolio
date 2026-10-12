@@ -39,6 +39,8 @@ export type ProjectEntry = {
   href?: string;
   /** Source repository URL. */
   github?: string;
+  /** Short note shown with the links, e.g. when a product is no longer public. */
+  note?: string;
   tags: string[];
 };
 
@@ -420,44 +422,48 @@ export const site = {
     {
       title: "Aqari — ADRES Sharjah real-estate portal",
       description:
-        "Government digital services portal with 29 real-estate workflows across web and native apps. Lead frontend engineer: typed web-to-native bridge, GA4 analytics layer, hardened API client, shared component library.",
+        "Government digital services portal with 29 real-estate workflows across web and native apps. I own the frontend across web, iOS, and Android: typed web-to-native bridge, GA4 analytics layer, hardened API client, shared component library, and releases.",
       category: "web",
+      href: "https://ds.sharjah.ae/home",
       tags: ["Next.js 14", "React 18", "TypeScript", "Redux Toolkit", "Material UI"],
     },
     {
-      title: "Minhaj Dispensary Management System",
-      category: "web",
+      title: "Lebara — telecom platform",
       description:
-        "End-to-end system for a welfare organization — database design, backend APIs, and admin UI built pro bono.",
-      tags: ["React.js", "Node.js", "Material UI", "PostgreSQL", "Sequelize"],
+        "Telecom platform serving 4M+ users across Germany, the UK, the Netherlands, Denmark, and France. Built full-stack features; stopped brute-force attacks with a custom Redis-backed rate limiter and reCAPTCHA v3; cut API latency with Redis caching; debugged live production with Azure App Insights.",
+      category: "web",
+      href: "https://www.lebara.com/",
+      tags: ["React", "Redux", "GraphQL", "Node.js", "TypeScript", "Redis", "Azure App Insights", "Adyen"],
     },
     {
-      title: "Node.js REST API Boilerplate",
-      category: "web",
+      title: "Mega — contact-center platform (Afiniti)",
       description:
-        "Production-ready starter with 3-layer architecture, generic exception handling, and CRUD APIs.",
-      github: "https://github.com/hammadahmad120",
-      tags: ["Node.js", "Express", "TypeScript", "PostgreSQL"],
+        "Contact-center product on microservices. Service lead for billing, auto-configuration, and storefront: REST APIs, Swagger docs, database design, and per-service front-ends. Cut configuration time from 3–5 minutes to under 1 minute, raised test coverage from 0% to 80%, and led a team of four.",
+      category: "web",
+      note: "Internal product, no longer publicly available",
+      tags: ["NestJS", "Next.js", "PostgreSQL", "TypeORM", "Material UI", "Stripe"],
     },
     {
-      title: "Zerodocs.com",
-      category: "web",
+      title: "Educative.io — interactive learning platform",
       description:
-        "Document collaboration SPA with auth, bulk S3 uploads, sharing, notifications, and chat.",
-      tags: ["React.js", "AWS S3", "Bootstrap"],
+        "E-learning platform used by 1M+ developers. Full-stack work on the core product: faster rendering, SEO structured data, a React-to-Next.js migration, and unit test coverage raised to 80%.",
+      category: "web",
+      href: "https://www.educative.io/",
+      tags: ["Next.js", "React", "Material UI", "Redux", "TypeScript", "Jest"],
     },
     {
-      title: "Valorx Chrome Extension",
-      category: "web",
+      title: "Zerodocs — document collaboration SaaS",
       description:
-        "Salesforce bulk editor with AG Grid, spreadsheet-style editing, custom version control, and direct Salesforce sync.",
-      tags: ["React.js", "TypeScript", "AG Grid", "Salesforce"],
+        "Built the frontend from scratch as sole frontend engineer: auth, bulk file management, project sharing, notifications, chat, and parallel bulk uploads to AWS S3. Still live today.",
+      category: "web",
+      href: "https://zerodocs.com/",
+      tags: ["React", "AWS S3", "Bootstrap", "react-dropzone"],
     },
     {
       title: "Audionic Obstacle Detector",
-      category: "web",
       description:
-        "Wearable aid for blind users — obstacle detection, distance calculation, and audio guidance using CV/ML.",
+        "Wearable aid for blind users — obstacle detection, distance calculation, and audio guidance using computer vision and machine learning. Final-year project; runner-up at Softec'19 and COMPPEC'19.",
+      category: "web",
       tags: ["OpenCV", "Python", "YOLO", "Machine Learning"],
     },
   ] satisfies ProjectEntry[],
