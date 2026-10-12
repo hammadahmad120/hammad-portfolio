@@ -106,7 +106,7 @@ export function HomePage() {
         <motion.div variants={fadeUp} transition={sectionTransition}>
           <SectionHeading
             eyebrow="About"
-            title="Building reliable full-stack products"
+            title="Building AI-powered, reliable full-stack products"
             description="Summary from my professional background."
           />
         </motion.div>
@@ -140,35 +140,27 @@ export function HomePage() {
           <SectionHeading
             eyebrow="Stack"
             title="Skills & tools"
-            description="Technologies I use day to day and others I've worked with."
+            description="What I work with day to day, from LLM pipelines to production web platforms."
           />
         </motion.div>
         <div className="grid gap-8 sm:grid-cols-2">
-          <motion.div variants={fadeUp} transition={sectionTransition} className="space-y-3">
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-              Proficient
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {site.skills.proficient.map((skill) => (
-                <Badge key={skill}>{skill}</Badge>
-              ))}
-            </div>
-          </motion.div>
-          <motion.div variants={fadeUp} transition={sectionTransition} className="space-y-3">
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-              Familiar
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {site.skills.familiar.map((skill) => (
-                <Badge
-                  key={skill}
-                  className="border-zinc-300 text-zinc-600 dark:border-zinc-600 dark:text-zinc-400"
-                >
-                  {skill}
-                </Badge>
-              ))}
-            </div>
-          </motion.div>
+          {site.skills.map((group) => (
+            <motion.div
+              key={group.name}
+              variants={fadeUp}
+              transition={sectionTransition}
+              className="space-y-3"
+            >
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+                {group.name}
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {group.items.map((skill) => (
+                  <Badge key={skill}>{skill}</Badge>
+                ))}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </motion.section>
 
@@ -181,7 +173,7 @@ export function HomePage() {
           <SectionHeading
             eyebrow="Career"
             title="Work experience"
-            description="Recent roles across telco, SaaS, and e-learning."
+            description="Roles across government, telecom, SaaS, and e-learning."
           />
         </motion.div>
         <ol className="relative space-y-8 border-l border-zinc-200 pl-6 dark:border-zinc-800">
@@ -241,7 +233,7 @@ export function HomePage() {
           <SectionHeading
             eyebrow="Portfolio"
             title="Featured projects"
-            description="Selected work from professional and personal builds."
+            description="AI products and selected professional and personal builds."
           />
           <Link
             href="/projects"
@@ -321,7 +313,7 @@ export function HomePage() {
           <div className="space-y-1">
             <CardTitle>Let&apos;s work together</CardTitle>
             <CardDescription>
-              Open to senior full-stack roles, consulting, and interesting product work.
+              Open to senior full-stack and AI application roles, consulting, and interesting product work.
             </CardDescription>
           </div>
           <Link href="/contact" className={buttonVariants({ size: "lg" })}>

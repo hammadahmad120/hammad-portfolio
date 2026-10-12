@@ -13,7 +13,7 @@ export default function ProjectsPage() {
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Projects</h1>
         <p className="text-zinc-600 dark:text-zinc-400">
-          Work spanning telco platforms, SaaS, welfare systems, and research tooling.
+          AI products, government and telecom platforms, SaaS, and research tooling.
         </p>
       </div>
       <div className="grid gap-6 sm:grid-cols-2">

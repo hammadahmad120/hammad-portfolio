@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     template: `%s | ${site.shortName}`,
   },
   description:
-    "Senior full-stack engineer — React, Next.js, Node.js, Nest.js, TypeScript, PostgreSQL. Projects and contact.",
+    "Senior full-stack engineer building production AI applications (RAG, LLM evaluation) and web platforms with TypeScript, React/Next.js, and Node.js/NestJS.",
   openGraph: {
     type: "website",
     siteName: site.shortName,
