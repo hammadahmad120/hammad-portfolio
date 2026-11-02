@@ -377,9 +377,9 @@ export const site = {
       period: "Oct 2024 – Present",
       project: "Aqari — ADRES Sharjah real-estate digital services portal",
       highlights: [
-        "Own the delivery of a government portal with 29 real-estate workflows across web and the ADRES iOS/Android apps: production support, enhancements, feature delivery, and releases on a 200k+ line Next.js/TypeScript codebase.",
-        "Own the frontend across all three channels — web, iOS, and Android — after taking over the native apps when the mobile team was dissolved; built the typed web-to-native webview bridge (navigation, downloads, platform detection) and manage native releases.",
-        "Designed a GA4 analytics layer, hardened the shared API client (token refresh, SSO re-auth, error mapping), enforced pixel-perfect UI via a shared component library, and built an AI-assisted code generation workflow with Jira and Figma.",
+        "Built 20 of the portal's real-estate workflows from scratch on a 200k+ line Next.js and TypeScript codebase, and own its releases and production support.",
+        "Took over iOS and Android delivery: built the typed web-to-native webview bridge and now ship native releases alongside web.",
+        "Built a dynamic event-tracking layer on GA4 and the Jest test setup, hardened the shared API client, and introduced an AI-assisted code-generation workflow wired to Jira and Figma.",
       ],
       technologies: [
         "Next.js 14",
@@ -398,9 +398,9 @@ export const site = {
       project:
         "Lebara — telecom platform, 4M+ users across Germany, the UK, the Netherlands, Denmark, and France",
       highlights: [
-        "Built full-stack features for a platform serving millions of live users and absorbing traffic spikes of millions of requests within seconds, integrating third-party and internal services with architecture reviews, docs, and unit tests.",
-        "Stopped brute-force attacks with a custom Redis-backed rate limiter and reCAPTCHA v3; cached slow-changing data in Redis to cut API latency.",
-        "Debugged live production issues with Azure App Insights and built the usage analytics and event logging on top of it.",
+        "Cut the dashboard's data load from 7–10 seconds to under 3 by caching slow-changing data in Redis, on a platform serving 4M+ users and absorbing spikes of millions of requests within seconds.",
+        "Stopped brute-force attacks with a custom Redis-backed rate limiter and reCAPTCHA v3.",
+        "Ranked production errors by frequency with Azure App Insights queries and fixed the most frequent ones first, then built the usage analytics and event logging on top of it.",
       ],
       technologies: [
         "React",
@@ -420,8 +420,9 @@ export const site = {
       period: "Jan 2022 – Feb 2023",
       project: "Mega — contact-center product on microservices",
       highlights: [
-        "Service lead for billing and auto-configuration microservices (REST APIs, Swagger docs, database design, per-service front-ends); cut configuration time from 3–5 minutes to under 1 minute and raised unit test coverage from 0% to 80%.",
-        "Led a team of four engineers: code reviews, client demos, sprint planning, and containerized deployments.",
+        "Led three microservices end to end (billing, auto-configuration, storefront): REST APIs, Swagger docs, database design, and their front-ends.",
+        "Cut auto-configuration setup from 5 minutes to under 1 (over 80% faster) and raised unit test coverage from 0% to 80%.",
+        "Built call-centre white-labelling (primary and secondary colours and logos applied site-wide) and led a team of four through reviews, demos, sprint planning, and containerised deployments.",
       ],
       technologies: [
         "NestJS",
@@ -439,7 +440,8 @@ export const site = {
       location: "Lahore",
       period: "Sep 2020 – Dec 2021",
       highlights: [
-        "Zerodocs.com: built the SPA from scratch as sole developer — auth, bulk file management, collaboration, chat, and AWS S3 bulk uploads.",
+        "Zerodocs: built the SPA from scratch and shipped it to production as the sole developer, then owned features, bugs, and production incidents alone.",
+        "Delivered auth, bulk file management, collaboration, chat, and parallel bulk uploads to AWS S3.",
         "Valorx: built a Chrome extension bringing Salesforce data into AG Grid with spreadsheet-style editing, bulk updates, and versioning.",
       ],
       technologies: [
@@ -458,7 +460,9 @@ export const site = {
       period: "Jul 2019 – Aug 2020",
       project: "Educative.io",
       highlights: [
-        "Full-stack work on Educative.io: faster rendering, SEO structured data, React-to-Next.js migration, and 80% test coverage.",
+        "Lifted Lighthouse scores above 80 on every metric through server-side rendering, fewer re-renders, and page caching with invalidation on data change.",
+        "Added structured data for SEO and accessibility fixes across a product used by 1M+ developers.",
+        "Contributed to the React-to-Next.js migration and raised unit test coverage to 80%.",
       ],
       technologies: [
         "Next.js",

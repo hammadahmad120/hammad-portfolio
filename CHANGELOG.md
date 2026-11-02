@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-02 — Accomplishment-based experience copy (revamp task 4)
+
+- Every experience entry in `lib/site.ts` rewritten as three result-first bullets
+  (metrics supplied by the owner); timeline design unchanged.
+
 ## 2026-11-02 — Stack marquee (revamp task 2)
 
 - "Skills & tools" cards replaced by `components/home/StackMarquee.tsx`: three looping
