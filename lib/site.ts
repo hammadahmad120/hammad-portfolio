@@ -104,6 +104,26 @@ export type FocusItem = {
   icon: FocusIcon;
 };
 
+export type Story = {
+  slug: string;
+  name: string;
+  /** Employer or role, with the period, e.g. "Confiz · 2023 – 2024". */
+  context: string;
+  /** One line: what the product is. */
+  tagline: string;
+  /** What the product does and my part in it; keep to two sentences. */
+  description: string;
+  /** One sentence: scope of the role first, then its headline result. Full bullets live in `experience`. */
+  highlight: string;
+  /** Composite image under public/stories, 3200×2000. */
+  image: string;
+  /** Live URL, or an internal link such as the case study. */
+  href?: string;
+  linkLabel?: string;
+  /** Shown instead of a link, or as a caveat under it. */
+  note?: string;
+};
+
 export type Stat = {
   value: string;
   label: string;
@@ -551,6 +571,74 @@ export const site = {
       ],
     },
   } satisfies FeaturedProduct,
+  /** Home "Success stories", in display order. InstantBot has its own spotlight above. */
+  stories: [
+    {
+      slug: "aqari",
+      name: "Aqari",
+      context: "Nextbridge FZE · Oct 2024 – Present",
+      tagline: "Government real-estate portal for ADRES Sharjah",
+      description:
+        "Tenancy contracts, power of attorney, and request tracking for Sharjah residents, on the web and inside the ADRES iOS and Android apps. I own the frontend across all three.",
+      highlight:
+        "Own the frontend across web, iOS, and Android: 20 of its 29 workflows built from scratch, plus the native bridge, analytics, and releases.",
+      image: "/stories/aqari.webp",
+      href: "https://ds.sharjah.ae/home",
+      linkLabel: "Live site",
+    },
+    {
+      slug: "lebara",
+      name: "Lebara",
+      context: "Confiz · Feb 2023 – Sep 2024",
+      tagline: "Telecom platform for 4M+ users across five countries",
+      description:
+        "Plans, top-ups, usage, and payments for Lebara customers in Germany, the UK, the Netherlands, Denmark, and France, under spikes of millions of requests within seconds.",
+      highlight:
+        "Full-stack features across the platform, including Redis caching that took the dashboard from 7–10 seconds to under 3 and a rate limiter that stopped brute-force attacks.",
+      image: "/stories/lebara.webp",
+      href: "https://www.lebara.com/",
+      linkLabel: "Live site",
+      note: "Screens in the image are illustrative, not customer data.",
+    },
+    {
+      slug: "mega",
+      name: "Mega Cloud",
+      context: "Afiniti · Jan 2022 – Feb 2023",
+      tagline: "Self-serve contact-center product on microservices",
+      description:
+        "A contact center a customer sets up alone: queues, phone numbers, billing, and their own branding. I led three of its microservices end to end.",
+      highlight:
+        "Led three microservices end to end, with setup time cut from 5 minutes to under 1 and test coverage raised from 0% to 80%.",
+      image: "/stories/mega.webp",
+      note: "Internal product, no longer publicly available.",
+    },
+    {
+      slug: "zerodocs",
+      name: "Zerodocs",
+      context: "Nextbridge Pvt Ltd · Sep 2020 – Dec 2021",
+      tagline: "Construction document collaboration SaaS",
+      description:
+        "Project specs, bulk document uploads, controlled sharing, and chat for construction teams.",
+      highlight:
+        "I built it from scratch and ran it in production as the sole developer: features, bugs, and incidents included.",
+      image: "/stories/zerodocs.webp",
+      href: "https://zerodocs.com/",
+      linkLabel: "Live site",
+    },
+    {
+      slug: "educative",
+      name: "Educative.io",
+      context: "Educative · Jul 2019 – Aug 2020",
+      tagline: "Interactive learning platform for 1M+ developers",
+      description:
+        "Hands-on courses in a browser-based editor. I worked on the core product's rendering, SEO, and accessibility.",
+      highlight:
+        "Rendering, caching, SEO, and accessibility work on the core product that lifted Lighthouse above 80 on every metric.",
+      image: "/stories/educative.webp",
+      href: "https://www.educative.io/",
+      linkLabel: "Live site",
+    },
+  ] satisfies Story[],
   projects: [
     {
       title: "Aqari — ADRES Sharjah real-estate portal",

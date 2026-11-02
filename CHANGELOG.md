@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-11-02 — In-page navigation with scroll spy
+
+- Navbar links are now Home, About, Work, Experience, Stack, Contact, all anchors on
+  the home page (`/#about` etc.). `components/useActiveSection.ts` highlights the
+  section in view; nothing is highlighted on other pages. Section ids added in
+  `HomePage.tsx`, `AboutBento.tsx`, `StackMarquee.tsx`; `Reveal` accepts an `id`.
+
+## 2026-11-02 — Success stories (revamp task 3)
+
+- Home "Selected projects" grid replaced by `components/home/SuccessStories.tsx`: five
+  stories from `site.stories` (Aqari, Lebara, Mega Cloud, Zerodocs, Educative.io), each
+  a composite image beside a tagline, short description, and one highlight result,
+  sides alternating. Placed directly under the InstantBot spotlight, which is trimmed to
+  a teaser; Experience moves below the stories. The `/projects` page and `ProjectCard`
+  are unchanged.
+- Composite images in `public/stories/*.webp` (3200×2000) were rendered with headless
+  Chrome from an HTML "blueprint" template: dark grid, title block, numbered modules,
+  attribute list, stack chips, and cropped screenshots in browser/phone frames with
+  solid redaction bars over customer names and IDs. Lebara is an original mock (the
+  site geo-blocks screenshots) and is labelled illustrative. Raw screenshots moved to
+  `assets/story-sources/` and gitignored.
+
 ## 2026-11-02 — Accomplishment-based experience copy (revamp task 4)
 
 - Every experience entry in `lib/site.ts` rewritten as three result-first bullets

@@ -105,8 +105,9 @@ const tileTitle =
 export function AboutBento() {
   return (
     <section
+      id="about"
       aria-labelledby="about-heading"
-      className="relative z-10 space-y-8 rounded-3xl border border-zinc-200/80 bg-zinc-50/95 p-4 shadow-2xl shadow-zinc-900/10 backdrop-blur-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-950/90 dark:shadow-black/60"
+      className="relative z-10 scroll-mt-20 space-y-8 rounded-3xl border border-zinc-200/80 bg-zinc-50/95 p-4 shadow-2xl shadow-zinc-900/10 backdrop-blur-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-950/90 dark:shadow-black/60"
     >
       <Reveal>
         <SectionHeading

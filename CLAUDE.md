@@ -52,14 +52,16 @@ app/
 components/
   home/                 HomePage (server), Hero, PinnedHero (sticky + scroll blur),
                         AboutBento (stats, two tracks, core stack, focus ring, how I
-                        work), StackMarquee (looping logo rows), InstantBotPreview
-                        (mock chat UI), Reveal (scroll-in wrapper), SectionHeading
+                        work), StackMarquee (looping logo rows), SuccessStories
+                        (alternating image + outcomes), InstantBotPreview (mock chat
+                        UI), Reveal (scroll-in wrapper), SectionHeading
   ui/                   badge, button (cva + buttonVariants), card, input, label, textarea
-  ContactForm.tsx, Navbar.tsx (sticky, theme toggle, mobile menu), Footer.tsx,
+  ContactForm.tsx, Navbar.tsx (sticky, in-page links Home/About/Work/Experience/Stack/
+  Contact with scroll spy via useActiveSection.ts, theme toggle, mobile menu), Footer.tsx,
   ThemeToggle.tsx, ProjectCard.tsx, icons.tsx, providers.tsx
 lib/
   site.ts               ALL profile content: headline, availability, stats, tracks,
-                        coreStack, focusRing, howIWork, stackRows, experience,
+                        coreStack, focusRing, howIWork, stackRows, stories, experience,
                         education, featuredProduct (InstantBot + case study copy),
                         projects, social links, resumeUrl, getSiteUrl()
   schemas.ts            ContactSchema (Zod) — shared by form and API route
@@ -119,8 +121,23 @@ Accepted structure (do not collapse it back into a single-identity headline):
   stack marquee), then Core stack
   (`site.coreStack`, 6 logos), Current focus ring (`site.focusRing`, exactly 8 items,
   tools and concepts, no email tile) and How I work (`site.howIWork`, 3 traits).
+- Navbar links are home-page anchors: `#about` (AboutBento), `#work` (wrapper around the
+  InstantBot spotlight + Success stories), `#experience`, `#stack` (StackMarquee),
+  `#contact` (CTA band). Each anchored element has `scroll-mt-20`. `/projects` and
+  `/contact` still exist and are reached from the Work section and the CTA band.
 - Home order: Hero (pinned on large, tall viewports), About bento, InstantBot
-  spotlight, Experience (`#experience`), Stack marquee, Projects, Education, CTA.
+  spotlight (teaser: name, tagline, description, two product cards, mock chat, case-study
+  link; no outcome list or chips), Success stories, Experience (`#experience`), Stack
+  marquee, Education, CTA.
+- Success stories (`components/home/SuccessStories.tsx`, `site.stories`): five products in
+  fixed order (Aqari, Lebara, Mega Cloud, Zerodocs, Educative.io; InstantBot is the
+  spotlight above), each a 3200×2000 blueprint composite in `public/stories/<slug>.webp`
+  beside a tagline, a two-sentence description, and ONE highlight result. No bullet
+  lists or stack chips here: the full accomplishment bullets and technologies live in
+  Experience, and the user asked for no duplication between the two. Raw screenshots live in `assets/story-sources/` (gitignored: they
+  contain customer names and IDs; the composites redact them). Lebara's image is an
+  original mock, not a screenshot, and says so. Regenerate composites with the headless
+  Chrome generator described in CHANGELOG 2026-11-02 rather than editing the webp files.
 - Stack marquee (`components/home/StackMarquee.tsx`, `site.stackRows`): three looping
   rows, Frontend & UI, Backend/data/infra, AI / LLM (badge "Current focus"). Tools use
   brand SVGs in `public/logos/tech/` (Simple Icons, AWS/Azure from Devicon); practices

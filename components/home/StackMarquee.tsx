@@ -79,7 +79,7 @@ const SECONDS_PER_ITEM = 4;
  */
 export function StackMarquee() {
   return (
-    <section className="space-y-8">
+    <section id="stack" className="scroll-mt-20 space-y-8">
       <Reveal>
         <SectionHeading
           eyebrow="Stack"

@@ -33,3 +33,6 @@ Thumbs.db
 .vscode/
 .idea/
 *.pem
+
+# Raw story screenshots (contain customer data) — never served or committed
+/assets/story-sources/

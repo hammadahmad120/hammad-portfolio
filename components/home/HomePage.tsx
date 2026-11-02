@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowRight, Check, GraduationCap, Mail, Sparkles } from "lucide-react";
-import { ProjectCard } from "@/components/ProjectCard";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { site } from "@/lib/site";
@@ -12,6 +11,7 @@ import { PinnedHero } from "./PinnedHero";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { StackMarquee } from "./StackMarquee";
+import { SuccessStories } from "./SuccessStories";
 
 const { featuredProduct } = site;
 
@@ -29,74 +29,61 @@ export function HomePage() {
         <AboutBento />
       </div>
 
-      {/* Featured product */}
-      <Reveal as="section">
-        <div className="relative overflow-hidden rounded-2xl border border-accent-200/70 bg-gradient-to-br from-accent-50 via-white to-white p-6 sm:p-10 dark:border-accent-900/50 dark:from-accent-950/40 dark:via-zinc-950 dark:to-zinc-950">
-          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
-            <div className="space-y-6">
-              <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-accent-700 dark:text-accent-400">
-                <Sparkles className="h-4 w-4" aria-hidden="true" />
-                Featured product · {featuredProduct.period}
-              </p>
-              <div className="space-y-2">
-                <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
-                  {featuredProduct.name}
-                </h2>
-                <p className="text-lg font-medium text-zinc-700 dark:text-zinc-300">
-                  {featuredProduct.tagline}
+      {/* Work: featured product + success stories share one anchor */}
+      <div id="work" className="scroll-mt-20 space-y-24 sm:space-y-32">
+        {/* Featured product */}
+        <Reveal as="section">
+          <div className="relative overflow-hidden rounded-2xl border border-accent-200/70 bg-gradient-to-br from-accent-50 via-white to-white p-6 sm:p-10 dark:border-accent-900/50 dark:from-accent-950/40 dark:via-zinc-950 dark:to-zinc-950">
+            <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+              <div className="space-y-6">
+                <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-accent-700 dark:text-accent-400">
+                  <Sparkles className="h-4 w-4" aria-hidden="true" />
+                  Featured product · {featuredProduct.period}
                 </p>
+                <div className="space-y-2">
+                  <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
+                    {featuredProduct.name}
+                  </h2>
+                  <p className="text-lg font-medium text-zinc-700 dark:text-zinc-300">
+                    {featuredProduct.tagline}
+                  </p>
+                </div>
+                <p className="leading-relaxed text-zinc-600 dark:text-zinc-400">
+                  {featuredProduct.description}
+                </p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {featuredProduct.products.map((product) => (
+                    <div
+                      key={product.name}
+                      className="rounded-xl border border-accent-200/70 bg-white/70 p-4 dark:border-accent-900/50 dark:bg-zinc-950/40"
+                    >
+                      <h3 className="font-display text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+                        {product.name}
+                      </h3>
+                      <p className="mt-1.5 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+                        {product.summary}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <Link
+                  href={`/projects/${featuredProduct.slug}`}
+                  className={cn(buttonVariants(), "gap-2")}
+                >
+                  Read the case study
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
               </div>
-              <p className="leading-relaxed text-zinc-600 dark:text-zinc-400">
-                {featuredProduct.description}
-              </p>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {featuredProduct.products.map((product) => (
-                  <div
-                    key={product.name}
-                    className="rounded-xl border border-accent-200/70 bg-white/70 p-4 dark:border-accent-900/50 dark:bg-zinc-950/40"
-                  >
-                    <h3 className="font-display text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                      {product.name}
-                    </h3>
-                    <p className="mt-1.5 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
-                      {product.summary}
-                    </p>
-                  </div>
-                ))}
-              </div>
-              <ul className="space-y-2.5 text-sm text-zinc-700 dark:text-zinc-300">
-                {featuredProduct.outcomes.map((outcome) => (
-                  <li key={outcome} className="flex gap-3">
-                    <Check
-                      className="mt-0.5 h-4 w-4 shrink-0 text-accent-600 dark:text-accent-400"
-                      aria-hidden="true"
-                    />
-                    <span>{outcome}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="flex flex-wrap gap-1.5">
-                {featuredProduct.tech.map((item) => (
-                  <Badge key={item} className="text-[11px]">
-                    {item}
-                  </Badge>
-                ))}
-              </div>
-              <Link
-                href={`/projects/${featuredProduct.slug}`}
-                className={cn(buttonVariants(), "gap-2")}
-              >
-                Read the case study
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
+              <InstantBotPreview />
             </div>
-            <InstantBotPreview />
           </div>
-        </div>
-      </Reveal>
+        </Reveal>
+
+        <SuccessStories />
+      </div>
 
       {/* Experience */}
-      <section id="experience" className="scroll-mt-24 space-y-8">
+      <section id="experience" className="scroll-mt-20 space-y-8">
         <Reveal>
           <SectionHeading
             eyebrow="Career"
@@ -167,33 +154,6 @@ export function HomePage() {
 
       <StackMarquee />
 
-      {/* Projects */}
-      <section className="space-y-8">
-        <Reveal>
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <SectionHeading
-              eyebrow="Work"
-              title="Selected projects"
-              description="Web platforms, tools, and AI products — professional and personal."
-            />
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-1 text-sm font-medium text-accent-700 underline-offset-4 hover:underline dark:text-accent-400"
-            >
-              See all
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          </div>
-        </Reveal>
-        <div className="grid gap-6 sm:grid-cols-2">
-          {site.projects.slice(0, 4).map((project, index) => (
-            <Reveal key={project.title} delay={index * 0.05} className="h-full">
-              <ProjectCard {...project} />
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
       {/* Education */}
       <section>
         <Reveal>
@@ -228,8 +188,8 @@ export function HomePage() {
         </Reveal>
       </section>
 
-      {/* CTA */}
-      <Reveal as="section">
+      {/* CTA / contact */}
+      <Reveal as="section" id="contact" className="scroll-mt-20">
         <div className="relative isolate overflow-hidden rounded-2xl bg-zinc-900 px-6 py-14 text-center text-zinc-50 sm:px-12 dark:bg-zinc-900">
           <div
             aria-hidden="true"

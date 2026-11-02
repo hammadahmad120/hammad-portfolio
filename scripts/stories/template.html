@@ -1,0 +1,99 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:Geist;src:url("../../app/fonts/GeistVF.woff");font-weight:100 900}
+@font-face{font-family:GeistMono;src:url("../../app/fonts/GeistMonoVF.woff");font-weight:100 900}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1600px;height:1000px;overflow:hidden;background:#09090b;color:#fafafa;font-family:Inter,system-ui,sans-serif}
+.canvas{position:relative;width:1600px;height:1000px;overflow:hidden;
+ background:
+  radial-gradient(900px 600px at 18% 18%, rgba(20,184,166,.22), transparent 60%),
+  radial-gradient(700px 500px at 88% 85%, rgba(45,212,191,.14), transparent 60%),
+  linear-gradient(rgba(94,234,212,.07) 1px, transparent 1px) 0 0/40px 40px,
+  linear-gradient(90deg, rgba(94,234,212,.07) 1px, transparent 1px) 0 0/40px 40px,
+  #09090b}
+.frame{position:absolute;inset:28px;border:1px solid rgba(94,234,212,.22)}
+.tick{position:absolute;width:18px;height:18px;border-color:rgba(94,234,212,.7);border-style:solid;border-width:0}
+.tick.tl{left:20px;top:20px;border-left-width:2px;border-top-width:2px}
+.tick.tr{right:20px;top:20px;border-right-width:2px;border-top-width:2px}
+.tick.bl{left:20px;bottom:20px;border-left-width:2px;border-bottom-width:2px}
+.tick.br{right:20px;bottom:20px;border-right-width:2px;border-bottom-width:2px}
+.mono{font-family:GeistMono,ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase}
+.part{position:absolute;left:56px;top:48px;font-size:13px;color:#2dd4bf}
+.fig{position:absolute;right:56px;top:48px;font-size:13px;color:#a1a1aa}
+.title{position:absolute;left:56px;top:92px;width:420px}
+.title h1{font-family:Geist,Inter,sans-serif;font-weight:700;font-size:62px;letter-spacing:-.03em;line-height:1;color:#fff}
+.title .sub{margin-top:14px;font-size:13px;color:#5eead4;line-height:1.7}
+.title .rule{width:56px;height:3px;background:#2dd4bf;margin:22px 0}
+.title p{font-size:17px;line-height:1.55;color:#a1a1aa;max-width:380px}
+.modules{position:absolute;left:56px;top:520px;width:380px;border:1px solid rgba(94,234,212,.3)}
+.modules div{display:flex;border-top:1px solid rgba(94,234,212,.22);font-size:13px;color:#e4e4e7}
+.modules div:first-child{border-top:0}
+.modules span:first-child{width:56px;padding:11px 0;text-align:center;color:#2dd4bf;border-right:1px solid rgba(94,234,212,.22)}
+.modules span:last-child{padding:11px 16px}
+.attrs{position:absolute;right:56px;top:92px;width:230px}
+.attrs div{font-size:12px;color:#d4d4d8;padding:5px 0 5px 16px;position:relative}
+.attrs div::before{content:"";position:absolute;left:0;top:11px;width:7px;height:7px;background:#2dd4bf}
+.stack{position:absolute;left:56px;right:56px;bottom:52px;display:flex;align-items:center;gap:10px}
+.stack .lab{font-size:12px;color:#71717a;margin-right:8px}
+.chip{font-size:12px;color:#e4e4e7;border:1px solid rgba(94,234,212,.35);background:rgba(9,9,11,.75);padding:9px 14px;border-radius:999px;letter-spacing:.06em}
+.win{position:absolute;background:#18181b;border:1px solid #3f3f46;border-radius:14px;overflow:hidden;box-shadow:0 40px 80px -20px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.04)}
+.win .bar{height:34px;display:flex;align-items:center;gap:7px;padding:0 14px;background:#27272a;border-bottom:1px solid #3f3f46}
+.win .bar i{width:10px;height:10px;border-radius:50%;background:#52525b;display:block}
+.win .bar i:nth-child(1){background:#f87171}.win .bar i:nth-child(2){background:#fbbf24}.win .bar i:nth-child(3){background:#34d399}
+.win .bar b{margin-left:12px;font:12px GeistMono,monospace;font-weight:400;color:#a1a1aa;background:#18181b;padding:5px 12px;border-radius:6px;letter-spacing:0}
+.win .shot{position:relative;overflow:hidden;background:#fff}
+.win .shot img{position:absolute;display:block}
+.shot i.blur{position:absolute;display:block;background:#e2e8f0;border-radius:4px}
+.phone{position:absolute;width:236px;background:#18181b;border:6px solid #27272a;border-radius:34px;overflow:hidden;box-shadow:0 40px 80px -20px rgba(0,0,0,.8)}
+.phone .notch{position:absolute;left:50%;top:0;transform:translateX(-50%);width:90px;height:22px;background:#27272a;border-radius:0 0 14px 14px;z-index:2}
+.phone .shot{position:relative;overflow:hidden;background:#fff}
+.phone .shot img{position:absolute;display:block}
+.dim{position:absolute;font-size:11px;color:#71717a;font-family:GeistMono,monospace;letter-spacing:.1em}
+.dim.h{border-top:1px solid rgba(161,161,170,.5);padding-top:6px;text-align:center}
+.dim.h::before,.dim.h::after{content:"";position:absolute;top:-4px;width:1px;height:9px;background:rgba(161,161,170,.6)}
+.dim.h::before{left:0}.dim.h::after{right:0}
+/* schematic (Lebara) */
+.schem{position:absolute;background:rgba(24,24,27,.85);border:1px solid rgba(94,234,212,.45);border-radius:14px;padding:18px 20px;color:#d4d4d8;font-size:12px}
+.schem h4{font:600 13px Inter;color:#fff;margin-bottom:12px;letter-spacing:.02em}
+.schem .row{display:flex;gap:10px;margin-bottom:10px}
+.schem .box{flex:1;border:1px dashed rgba(94,234,212,.55);border-radius:8px;padding:10px 12px}
+.schem .box small{display:block;font:11px GeistMono,monospace;color:#5eead4;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.schem .box strong{display:block;font:700 20px Geist,Inter;color:#fff;letter-spacing:-.02em}
+.schem .bars{display:flex;align-items:flex-end;gap:8px;height:90px;margin:8px 0 4px}
+.schem .bars i{flex:1;background:linear-gradient(180deg,#2dd4bf,#0f766e);border-radius:3px 3px 0 0;display:block}
+.schem .flags{display:flex;gap:8px;flex-wrap:wrap}
+.schem .flags span{border:1px solid rgba(94,234,212,.4);border-radius:999px;padding:5px 10px;font:11px GeistMono,monospace;letter-spacing:.1em;color:#e4e4e7}
+.arrow{position:absolute;height:1px;background:rgba(94,234,212,.6)}
+.arrow::after{content:"";position:absolute;right:-1px;top:-4px;border:4px solid transparent;border-left:7px solid rgba(94,234,212,.9)}
+.ring{width:120px;height:120px;border-radius:50%;background:conic-gradient(#2dd4bf 0 68%,rgba(94,234,212,.15) 68% 100%);display:grid;place-items:center;margin:0 auto}
+.ring b{width:84px;height:84px;border-radius:50%;background:#18181b;display:grid;place-items:center;font:700 22px Geist,Inter;color:#fff}
+</style></head>
+<body><div class="canvas" id="c">
+<div class="frame"></div><div class="tick tl"></div><div class="tick tr"></div><div class="tick bl"></div><div class="tick br"></div>
+</div>
+<script>
+const D = window.__DATA__;
+function el(tag, cls, html){const e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e;}
+const c=document.getElementById('c');
+c.appendChild(el('div','mono part',D.part));
+c.appendChild(el('div','mono fig','FIG. 1 · '+D.fig));
+const t=el('div','title'); t.innerHTML=`<h1>${D.name}</h1><div class="mono sub">${D.sub}</div><div class="rule"></div><p>${D.desc}</p>`; c.appendChild(t);
+const m=el('div','modules'); D.modules.forEach((x,i)=>{m.innerHTML+=`<div><span class="mono">0${i+1}</span><span>${x}</span></div>`}); c.appendChild(m);
+const a=el('div','mono attrs'); D.attrs.forEach(x=>{a.innerHTML+=`<div>${x}</div>`}); c.appendChild(a);
+const s=el('div','stack'); s.innerHTML=`<span class="mono lab">Tech stack</span>`+D.stack.map(x=>`<span class="mono chip">${x}</span>`).join(''); c.appendChild(s);
+for(const w of D.wins){
+  if(w.kind==='schem'){ const d=el('div','schem',w.html); Object.assign(d.style,{left:w.x+'px',top:w.y+'px',width:w.w+'px',zIndex:w.z||1}); c.appendChild(d); continue; }
+  if(w.kind==='arrow'){ const d=el('div','arrow'); Object.assign(d.style,{left:w.x+'px',top:w.y+'px',width:w.w+'px'}); c.appendChild(d); continue; }
+  if(w.kind==='winhtml'){ const d=el('div','win'); d.style.width=(w.w+2)+'px'; d.innerHTML=`<div class="bar"><i></i><i></i><i></i><b>${w.url||''}</b></div><div class="shot" style="height:${w.h}px;background:${w.bg||'#fff'}">${w.html}</div>`; Object.assign(d.style,{left:w.x+'px',top:w.y+'px',zIndex:w.z||1}); c.appendChild(d); continue; }
+  if(w.kind==='phonehtml'){ const d=el('div','phone'); d.style.width=(w.w+12)+'px'; d.innerHTML=`<div class="notch"></div><div class="shot" style="height:${w.h}px;background:${w.bg||'#fff'}">${w.html}</div>`; Object.assign(d.style,{left:w.x+'px',top:w.y+'px',zIndex:w.z||1}); c.appendChild(d); continue; }
+  const scale=w.w/w.crop.w; const h=Math.round(w.crop.h*scale);
+  const blurs=(w.blur||[]).map(b=>`<i class="blur" style="left:${Math.round((b.x-w.crop.x)*scale)}px;top:${Math.round((b.y-w.crop.y)*scale)}px;width:${Math.round(b.w*scale)}px;height:${Math.round(b.h*scale)}px;${b.bg?('background:'+b.bg):''}"></i>`).join('');
+  const img=`<img src="${w.src}" style="width:${Math.round(w.nat*scale)}px;left:${-Math.round(w.crop.x*scale)}px;top:${-Math.round(w.crop.y*scale)}px">`+blurs;
+  if(w.kind==='phone'){ const d=el('div','phone'); d.style.width=(w.w+12)+'px'; d.innerHTML=`<div class="notch"></div><div class="shot" style="height:${h}px">${img}</div>`; Object.assign(d.style,{left:w.x+'px',top:w.y+'px',zIndex:w.z||1}); c.appendChild(d); continue; }
+  const d=el('div','win'); d.style.width=(w.w+2)+'px'; d.innerHTML=`<div class="bar"><i></i><i></i><i></i><b>${w.url||''}</b></div><div class="shot" style="height:${h}px">${img}</div>`;
+  Object.assign(d.style,{left:w.x+'px',top:w.y+'px',zIndex:w.z||1}); c.appendChild(d);
+}
+for(const dm of (D.dims||[])){ const d=el('div','dim h',dm.label); Object.assign(d.style,{left:dm.x+'px',top:dm.y+'px',width:dm.w+'px'}); c.appendChild(d); }
+</script></body></html>

@@ -8,20 +8,27 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { buttonVariants } from "@/components/ui/button";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { useActiveSection } from "./useActiveSection";
+
+/** In-page sections on the home page, in order. Ids are set in HomePage. */
+const sections = ["about", "work", "experience", "stack", "contact"] as const;
 
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/projects", label: "Projects" },
-  { href: "/contact", label: "Contact" },
+  { href: "/", label: "Home", section: null },
+  { href: "/#about", label: "About", section: "about" },
+  { href: "/#work", label: "Work", section: "work" },
+  { href: "/#experience", label: "Experience", section: "experience" },
+  { href: "/#stack", label: "Stack", section: "stack" },
+  { href: "/#contact", label: "Contact", section: "contact" },
 ] as const;
-
-function isActivePath(pathname: string, href: string): boolean {
-  return href === "/" ? pathname === "/" : pathname.startsWith(href);
-}
 
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const onHome = pathname === "/";
+  const active = useActiveSection(sections, onHome);
+  /** Home is current only at the top of the home page; other pages highlight nothing. */
+  const isActive = (section: string | null) => onHome && active === section;
 
   useEffect(() => {
     setOpen(false);
@@ -47,17 +54,17 @@ export function Navbar() {
         </Link>
 
         <ul className="hidden items-center gap-1 sm:flex">
-          {links.map(({ href, label }) => {
-            const isActive = isActivePath(pathname, href);
+          {links.map(({ href, label, section }) => {
+            const current = isActive(section);
             return (
               <li key={href}>
                 <Link
                   href={href}
-                  aria-current={isActive ? "page" : undefined}
+                  aria-current={current ? "location" : undefined}
                   className={cn(
                     "rounded-md px-3 py-1.5 text-sm text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-50",
-                    isActive &&
-                      "bg-zinc-100 font-medium text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50"
+                    current &&
+                      "bg-zinc-100 font-medium text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50",
                   )}
                 >
                   {label}
@@ -74,7 +81,7 @@ export function Navbar() {
             rel="noopener noreferrer"
             className={cn(
               buttonVariants({ variant: "outline", size: "sm" }),
-              "hidden gap-1.5 sm:inline-flex"
+              "hidden gap-1.5 sm:inline-flex",
             )}
           >
             <FileText className="h-3.5 w-3.5" aria-hidden="true" />
@@ -100,17 +107,18 @@ export function Navbar() {
           className="border-t border-zinc-200 sm:hidden dark:border-zinc-800"
         >
           <ul className="mx-auto max-w-7xl space-y-1 px-4 py-3">
-            {links.map(({ href, label }) => {
-              const isActive = isActivePath(pathname, href);
+            {links.map(({ href, label, section }) => {
+              const current = isActive(section);
               return (
                 <li key={href}>
                   <Link
                     href={href}
-                    aria-current={isActive ? "page" : undefined}
+                    onClick={() => setOpen(false)}
+                    aria-current={current ? "location" : undefined}
                     className={cn(
                       "block rounded-md px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900",
-                      isActive &&
-                        "bg-zinc-100 font-medium text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50"
+                      current &&
+                        "bg-zinc-100 font-medium text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50",
                     )}
                   >
                     {label}

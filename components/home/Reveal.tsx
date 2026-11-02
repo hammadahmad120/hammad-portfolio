@@ -11,18 +11,26 @@ const motionTags = {
 
 type RevealProps = {
   children: ReactNode;
+  id?: string;
   className?: string;
   delay?: number;
   as?: keyof typeof motionTags;
 };
 
 /** Fades and lifts content into view the first time it scrolls on screen. */
-export function Reveal({ children, className, delay = 0, as = "div" }: RevealProps) {
+export function Reveal({
+  children,
+  id,
+  className,
+  delay = 0,
+  as = "div",
+}: RevealProps) {
   const prefersReducedMotion = useReducedMotion();
   const Component = motionTags[as];
 
   return (
     <Component
+      id={id}
       className={className}
       initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
       whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
