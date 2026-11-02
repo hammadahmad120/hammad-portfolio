@@ -11,6 +11,7 @@ import { InstantBotPreview } from "./InstantBotPreview";
 import { PinnedHero } from "./PinnedHero";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
+import { StackMarquee } from "./StackMarquee";
 
 const { featuredProduct } = site;
 
@@ -164,46 +165,7 @@ export function HomePage() {
         </ol>
       </section>
 
-      {/* Skills */}
-      <section className="space-y-8">
-        <Reveal>
-          <SectionHeading
-            eyebrow="Stack"
-            title="Skills & tools"
-            description="A production web stack, plus the AI tooling I now build products with."
-          />
-        </Reveal>
-        <div className="grid gap-5 sm:grid-cols-2">
-          {site.skills.map((group, index) => (
-            <Reveal key={group.name} delay={index * 0.05}>
-              <div
-                className={cn(
-                  "h-full rounded-xl border bg-white p-5 dark:bg-zinc-900/40",
-                  group.badge
-                    ? "border-accent-200/80 dark:border-accent-900/60"
-                    : "border-zinc-200 dark:border-zinc-800",
-                )}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <h3 className="font-display text-xs font-semibold uppercase tracking-wider text-accent-700 dark:text-accent-400">
-                    {group.name}
-                  </h3>
-                  {group.badge ? (
-                    <Badge className="border-accent-200 bg-accent-50 text-[11px] text-accent-800 dark:border-accent-900 dark:bg-accent-950/50 dark:text-accent-300">
-                      {group.badge}
-                    </Badge>
-                  ) : null}
-                </div>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {group.items.map((skill) => (
-                    <Badge key={skill}>{skill}</Badge>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      <StackMarquee />
 
       {/* Projects */}
       <section className="space-y-8">

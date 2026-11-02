@@ -52,14 +52,14 @@ app/
 components/
   home/                 HomePage (server), Hero, PinnedHero (sticky + scroll blur),
                         AboutBento (stats, two tracks, core stack, focus ring, how I
-                        work), InstantBotPreview (mock chat UI), Reveal (scroll-in
-                        wrapper), SectionHeading
+                        work), StackMarquee (looping logo rows), InstantBotPreview
+                        (mock chat UI), Reveal (scroll-in wrapper), SectionHeading
   ui/                   badge, button (cva + buttonVariants), card, input, label, textarea
   ContactForm.tsx, Navbar.tsx (sticky, theme toggle, mobile menu), Footer.tsx,
   ThemeToggle.tsx, ProjectCard.tsx, icons.tsx, providers.tsx
 lib/
   site.ts               ALL profile content: headline, availability, stats, tracks,
-                        coreStack, focusRing, howIWork, skills (grouped), experience,
+                        coreStack, focusRing, howIWork, stackRows, experience,
                         education, featuredProduct (InstantBot + case study copy),
                         projects, social links, resumeUrl, getSiteUrl()
   schemas.ts            ContactSchema (Zod) — shared by form and API route
@@ -120,8 +120,12 @@ Accepted structure (do not collapse it back into a single-identity headline):
   (`site.coreStack`, 6 logos), Current focus ring (`site.focusRing`, exactly 8 items,
   tools and concepts, no email tile) and How I work (`site.howIWork`, 3 traits).
 - Home order: Hero (pinned on large, tall viewports), About bento, InstantBot
-  spotlight, Experience (`#experience`), Skills, Projects, Education, CTA.
-- Skills order: Frontend, Backend & Data, AI / LLM (badge "Current focus"), Tools.
+  spotlight, Experience (`#experience`), Stack marquee, Projects, Education, CTA.
+- Stack marquee (`components/home/StackMarquee.tsx`, `site.stackRows`): three looping
+  rows, Frontend & UI, Backend/data/infra, AI / LLM (badge "Current focus"). Tools use
+  brand SVGs in `public/logos/tech/` (Simple Icons, AWS/Azure from Devicon); practices
+  such as RAG or tool calling use Lucide icons. No Framer Motion or Tailwind pills
+  (user's call). The old grouped Skills cards are gone.
 - Projects page groups: "AI-powered products" (featured InstantBot) then "Web
   platforms & tools" (Aqari first). `ProjectEntry.category` drives the grouping.
 - Describe AI tenure honestly ("since 2026"); never claim it as the job title.

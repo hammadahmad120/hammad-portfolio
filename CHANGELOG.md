@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-11-02 — Stack marquee (revamp task 2)
+
+- "Skills & tools" cards replaced by `components/home/StackMarquee.tsx`: three looping
+  rows of logo pills (Frontend & UI, Backend/data/infra, AI / LLM) driven by
+  `site.stackRows`. CSS keyframes, pauses on hover, static under reduced motion.
+- 34 brand SVGs added under `public/logos/tech/` (Simple Icons; AWS and Azure from
+  Devicon). `SkillGroup`/`site.skills` removed.
+
 ## 2026-11-02 — Pinned hero and About bento (revamp task 1)
 
 - Hero pins to the viewport on large, tall screens (`pin:` screen in Tailwind) and

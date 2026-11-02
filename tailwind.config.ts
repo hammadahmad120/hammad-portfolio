@@ -15,8 +15,18 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
+        display: [
+          "var(--font-display)",
+          "var(--font-sans)",
+          "system-ui",
+          "sans-serif",
+        ],
+        mono: [
+          "var(--font-mono)",
+          "ui-monospace",
+          "SFMono-Regular",
+          "monospace",
+        ],
       },
       colors: {
         accent: colors.teal,
@@ -29,10 +39,20 @@ const config: Config = {
         orbit: {
           to: { transform: "rotate(360deg)" },
         },
+        "marquee-left": {
+          from: { transform: "translate3d(0, 0, 0)" },
+          to: { transform: "translate3d(-50%, 0, 0)" },
+        },
+        "marquee-right": {
+          from: { transform: "translate3d(-50%, 0, 0)" },
+          to: { transform: "translate3d(0, 0, 0)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both",
         orbit: "orbit 48s linear infinite",
+        "marquee-left": "marquee-left 60s linear infinite",
+        "marquee-right": "marquee-right 60s linear infinite",
       },
     },
   },

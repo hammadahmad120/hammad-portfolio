@@ -3,11 +3,37 @@ export type SocialLink = {
   href: string;
 };
 
-export type SkillGroup = {
+export type ConceptIcon =
+  | "rag"
+  | "llm"
+  | "agents"
+  | "toolCalling"
+  | "prompt"
+  | "embeddings"
+  | "hybridSearch"
+  | "reranking"
+  | "guardrails"
+  | "evaluation"
+  | "structured"
+  | "rest"
+  | "chip";
+
+export type StackItem = {
   name: string;
-  items: string[];
-  /** Short label shown on the card, e.g. "Current focus". */
+  /** Brand logo file: `public/logos/tech/<logo>.svg`. */
+  logo?: string;
+  /** How a dark-on-light logo is shown in dark mode. */
+  dark?: "invert" | "white";
+  /** Lucide icon for practices and tools without a usable logo. */
+  concept?: ConceptIcon;
+};
+
+export type StackRow = {
+  name: string;
+  /** Short label next to the row name, e.g. "Current focus". */
   badge?: string;
+  direction: "left" | "right";
+  items: StackItem[];
 };
 
 export type TrackIcon = "web" | "ai";
@@ -273,74 +299,76 @@ export const site = {
       href: "mailto:hammad.shahid120@gmail.com",
     },
   ] satisfies SocialLink[],
-  skills: [
+  /** Stack marquee rows (home). Logos live in public/logos/tech. */
+  stackRows: [
     {
-      name: "Frontend",
+      name: "Frontend & UI",
+      direction: "left",
       items: [
-        "React",
-        "Next.js (App Router)",
-        "TypeScript",
-        "Redux Toolkit",
-        "Material UI",
-        "react-hook-form",
-        "next-intl",
-        "Google Analytics 4",
+        { name: "HTML", logo: "html5" },
+        { name: "CSS", logo: "css" },
+        { name: "JavaScript", logo: "javascript" },
+        { name: "React", logo: "react" },
+        { name: "Next.js", logo: "nextjs", dark: "invert" },
+        { name: "TypeScript", logo: "typescript" },
+        { name: "Redux", logo: "redux" },
+        { name: "Material UI", logo: "mui" },
+        { name: "React Hook Form", logo: "reacthookform" },
+        { name: "Figma", logo: "figma" },
+        { name: "Google Analytics", logo: "googleanalytics" },
       ],
     },
     {
-      name: "Backend & Data",
+      name: "Backend, data & infra",
+      direction: "right",
       items: [
-        "Node.js",
-        "NestJS",
-        "Express",
-        "GraphQL",
-        "REST",
-        "PostgreSQL",
-        "MongoDB",
-        "Redis",
-        "TypeORM",
-        "Sequelize",
-        "Supabase",
-        "Python",
+        { name: "Node.js", logo: "nodejs" },
+        { name: "NestJS", logo: "nestjs" },
+        { name: "Express", logo: "express", dark: "invert" },
+        { name: "GraphQL", logo: "graphql" },
+        { name: "REST", concept: "rest" },
+        { name: "PostgreSQL", logo: "postgresql" },
+        { name: "MongoDB", logo: "mongodb" },
+        { name: "Redis", logo: "redis" },
+        { name: "Supabase", logo: "supabase" },
+        { name: "TypeORM", logo: "typeorm" },
+        { name: "Python", logo: "python" },
+        { name: "Docker", logo: "docker" },
+        { name: "Jenkins", logo: "jenkins" },
+        { name: "AWS", logo: "aws", dark: "white" },
+        { name: "Azure", logo: "azure" },
+        { name: "Vercel", logo: "vercel", dark: "invert" },
+        { name: "Stripe", logo: "stripe" },
+        { name: "Adyen", logo: "adyen" },
+        { name: "Git", logo: "git" },
+        { name: "GitHub", logo: "github", dark: "invert" },
+        { name: "Jira", logo: "jira" },
+        { name: "Swagger", logo: "swagger" },
       ],
     },
     {
       name: "AI / LLM",
       badge: "Current focus",
+      direction: "left",
       items: [
-        "RAG",
-        "Hybrid search",
-        "pgvector",
-        "Embeddings",
-        "Reranking",
-        "Prompt engineering",
-        "Gemini API",
-        "Groq API",
-        "Grounding & guardrails",
-        "LLM evaluation",
-        "Structured outputs",
-        "Claude Code",
-        "MCP",
+        { name: "RAG", concept: "rag" },
+        { name: "LLMs", concept: "llm" },
+        { name: "Agents", concept: "agents" },
+        { name: "Tool calling", concept: "toolCalling" },
+        { name: "MCP", logo: "mcp", dark: "invert" },
+        { name: "Prompt engineering", concept: "prompt" },
+        { name: "Embeddings", concept: "embeddings" },
+        { name: "Hybrid search", concept: "hybridSearch" },
+        { name: "Reranking", concept: "reranking" },
+        { name: "Guardrails", concept: "guardrails" },
+        { name: "LLM evaluation", concept: "evaluation" },
+        { name: "Structured outputs", concept: "structured" },
+        { name: "Gemini", logo: "gemini" },
+        { name: "Groq", concept: "chip" },
+        { name: "pgvector", logo: "postgresql" },
       ],
     },
-    {
-      name: "Tools & Practices",
-      items: [
-        "Jest",
-        "Docker",
-        "Jenkins",
-        "Git",
-        "Jira",
-        "Figma",
-        "Swagger",
-        "Azure App Insights",
-        "AWS S3",
-        "Stripe",
-        "Adyen",
-        "Microservices",
-      ],
-    },
-  ] satisfies SkillGroup[],
+  ] satisfies StackRow[],
   experience: [
     {
       company: "Nextbridge FZE",
