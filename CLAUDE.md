@@ -25,6 +25,13 @@ lucide-react (icons) · class-variance-authority + tailwind-merge (`cn()` helper
 - **Motion**: the hero uses CSS keyframes (`animate-fade-up` + `animationDelay`) so it
   paints without JS. Below-the-fold sections use `components/home/Reveal.tsx`
   (Framer `whileInView`, once). Both honour reduced motion.
+- **Pinned hero**: on the custom `pin:` screen (`min-width 1024px` and `min-height
+  780px`, see `tailwind.config.ts`) `components/home/PinnedHero.tsx` makes the hero
+  sticky and softly blurs/dims it with scroll (Framer `useScroll`, clamped) while the
+  About bento, a content-width bordered panel, scrolls over it. Hero and bento share one
+  pin container in `HomePage.tsx`, so the hero un-pins and leaves with the panel and
+  later sections have nothing behind them. Shorter or narrower viewports get normal
+  flow. The same media query is duplicated in `PinnedHero.tsx`; keep them in sync.
 - **Generated assets**: `app/opengraph-image.tsx`, `app/icon.tsx`, `app/apple-icon.tsx`
   are rendered with `next/og`; there is no static favicon.
 - **Résumé**: `public/Hammad_Ahmad_Resume.pdf`, linked via `site.resumeUrl`. Replace the
@@ -35,7 +42,7 @@ lucide-react (icons) · class-variance-authority + tailwind-merge (`cn()` helper
 ```
 app/
   layout.tsx            Root layout: Inter font, metadataBase, Providers
-  (public)/layout.tsx   Navbar + <main> container
+  (public)/layout.tsx   Navbar + <main> container (max-w-7xl, matches Navbar/Footer)
   (public)/page.tsx     Home (renders components/home/HomePage.tsx)
   (public)/projects/    Featured product card + project grid
   (public)/projects/instantbot/  InstantBot case study (content: site.featuredProduct)
@@ -43,16 +50,18 @@ app/
   api/contact/route.ts  POST → sends email via Resend REST API (no SDK)
   sitemap.ts, robots.ts, not-found.tsx, opengraph-image.tsx, icon.tsx, apple-icon.tsx
 components/
-  home/                 HomePage (server), Hero, InstantBotPreview (mock chat UI),
-                        Reveal (scroll-in wrapper), SectionHeading
+  home/                 HomePage (server), Hero, PinnedHero (sticky + scroll blur),
+                        AboutBento (stats, two tracks, core stack, focus ring, how I
+                        work), InstantBotPreview (mock chat UI), Reveal (scroll-in
+                        wrapper), SectionHeading
   ui/                   badge, button (cva + buttonVariants), card, input, label, textarea
   ContactForm.tsx, Navbar.tsx (sticky, theme toggle, mobile menu), Footer.tsx,
   ThemeToggle.tsx, ProjectCard.tsx, icons.tsx, providers.tsx
 lib/
-  site.ts               ALL profile content: headline, availability, stats, skills
-                        (grouped), experience, education, featuredProduct (InstantBot
-                        + case study copy), projects, social links, resumeUrl,
-                        getSiteUrl()
+  site.ts               ALL profile content: headline, availability, stats, tracks,
+                        coreStack, focusRing, howIWork, skills (grouped), experience,
+                        education, featuredProduct (InstantBot + case study copy),
+                        projects, social links, resumeUrl, getSiteUrl()
   schemas.ts            ContactSchema (Zod) — shared by form and API route
   contact.ts            isContactFormConfigured()
   motion.ts             Framer Motion variants: fadeUp, staggerContainer, sectionTransition
@@ -103,10 +112,15 @@ Accepted structure (do not collapse it back into a single-identity headline):
 - Hero headline: "7+ years shipping production web platforms. Now building AI-powered
   products on top of that." Title: "Senior Full-Stack Engineer · Building AI-powered
   products". AI phrase gets the gradient highlight.
-- "Two tracks, one engineer" section (`site.tracks`): Web platforms (7+ years) and
-  AI-powered products (Since 2026) as equal cards, each with proof and a link.
-- Home order: Hero, Two tracks, InstantBot spotlight, Experience (`#experience`),
-  Skills, Projects, Education, CTA.
+- "Two tracks, one engineer" lives in the About bento (`components/home/AboutBento.tsx`):
+  stats row (`site.stats`), Web platforms (7+ years) and AI-powered products (Since
+  2026) as equal tiles (`site.tracks`: icon, one-line pitch with `**bold**` stack
+  names, five proof lines as bold name + detail, link; no tech chips, those live in Core stack and the
+  stack marquee), then Core stack
+  (`site.coreStack`, 6 logos), Current focus ring (`site.focusRing`, exactly 8 items,
+  tools and concepts, no email tile) and How I work (`site.howIWork`, 3 traits).
+- Home order: Hero (pinned on large, tall viewports), About bento, InstantBot
+  spotlight, Experience (`#experience`), Skills, Projects, Education, CTA.
 - Skills order: Frontend, Backend & Data, AI / LLM (badge "Current focus"), Tools.
 - Projects page groups: "AI-powered products" (featured InstantBot) then "Web
   platforms & tools" (Aqari first). `ProjectEntry.category` drives the grouping.

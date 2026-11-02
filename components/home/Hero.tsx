@@ -17,9 +17,15 @@ const socialIcons: Record<string, ComponentType<{ className?: string }>> = {
 const enter = "animate-fade-up motion-reduce:animate-none";
 const delay = (step: number) => ({ animationDelay: `${step * 90}ms` });
 
+/**
+ * On large, tall viewports (`pin:` screen) the hero fills the space below the 4rem
+ * navbar; PinnedHero pins it there and the rest of the page scrolls over it.
+ * Elsewhere it sits in normal flow, so a short laptop never traps content under
+ * the fold.
+ */
 export function Hero() {
   return (
-    <section className="relative isolate pt-6 sm:pt-12">
+    <section className="relative isolate pt-6 sm:pt-12 pin:flex pin:h-[calc(100svh-4rem)] pin:flex-col pin:justify-center pin:pt-0">
       {/* Background glow. Blobs stay inside the clip box so no hard edge shows. */}
       <div
         aria-hidden="true"
@@ -60,7 +66,7 @@ export function Hero() {
           <p
             className={cn(
               enter,
-              "mt-5 inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400"
+              "mt-5 inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400",
             )}
             style={delay(2)}
           >
@@ -72,7 +78,10 @@ export function Hero() {
             className={cn(enter, "mt-8 flex flex-wrap items-center gap-3")}
             style={delay(3)}
           >
-            <Link href="/projects" className={cn(buttonVariants({ size: "lg" }), "gap-2")}>
+            <Link
+              href="/projects"
+              className={cn(buttonVariants({ size: "lg" }), "gap-2")}
+            >
               View projects
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
@@ -80,7 +89,10 @@ export function Hero() {
               href={site.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: "outline", size: "lg" }), "gap-2")}
+              className={cn(
+                buttonVariants({ variant: "outline", size: "lg" }),
+                "gap-2",
+              )}
             >
               <FileText className="h-4 w-4" aria-hidden="true" />
               Résumé
@@ -108,11 +120,11 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Portrait: cutout stands on the page, bottom edge flush with the stats strip */}
+        {/* Portrait: cutout stands on the page; capped by viewport height when pinned */}
         <div
           className={cn(
             enter,
-            "relative mx-auto w-full max-w-[300px] sm:max-w-[360px] lg:mx-0 lg:max-w-[500px] lg:justify-self-end"
+            "relative mx-auto w-full max-w-[300px] sm:max-w-[360px] lg:mx-0 lg:max-w-[500px] lg:justify-self-end pin:max-w-[min(500px,48svh)]",
           )}
           style={delay(2)}
         >
@@ -135,31 +147,6 @@ export function Hero() {
           />
         </div>
       </div>
-
-      <dl
-        className={cn(
-          enter,
-          "relative grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-zinc-200 bg-zinc-200 sm:grid-cols-4 dark:border-zinc-800 dark:bg-zinc-800"
-        )}
-        style={delay(4)}
-      >
-        {site.stats.map(({ value, label, context }) => (
-          <div
-            key={label}
-            className="flex flex-col-reverse justify-end gap-1 bg-white px-5 py-5 dark:bg-zinc-950"
-          >
-            <dt className="text-sm text-zinc-700 dark:text-zinc-300">
-              <span className="block font-medium">{label}</span>
-              {context ? (
-                <span className="mt-0.5 block text-xs text-zinc-500 dark:text-zinc-400">
-                  {context}
-                </span>
-              ) : null}
-            </dt>
-            <dd className="font-display text-3xl font-bold tracking-tight">{value}</dd>
-          </div>
-        ))}
-      </dl>
     </section>
   );
 }

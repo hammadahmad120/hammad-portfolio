@@ -15,7 +15,9 @@ html {
 }
 
 body {
-  @apply bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50;
+  /* overflow-x: clip (not hidden) so decorative bleeds such as the hero glow never
+     add horizontal scroll, while position: sticky keeps working. */
+  @apply overflow-x-clip bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50;
 }
 
 ::selection {

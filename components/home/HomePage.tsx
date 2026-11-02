@@ -5,8 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { AboutBento } from "./AboutBento";
 import { Hero } from "./Hero";
 import { InstantBotPreview } from "./InstantBotPreview";
+import { PinnedHero } from "./PinnedHero";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
@@ -15,78 +17,16 @@ const { featuredProduct } = site;
 export function HomePage() {
   return (
     <div className="space-y-24 pb-8 sm:space-y-32">
-      <Hero />
-
-      {/* Two tracks */}
-      <section className="space-y-8">
-        <Reveal>
-          <SectionHeading
-            eyebrow="What I do"
-            title="Two tracks, one engineer"
-            description="Years of production web engineering, and the AI product work now built on top of it."
-          />
-        </Reveal>
-        <div className="grid gap-6 md:grid-cols-2">
-          {site.tracks.map((track, index) => {
-            const isAi = index === 1;
-            return (
-              <Reveal key={track.name} delay={index * 0.08} className="h-full">
-                <div
-                  className={cn(
-                    "flex h-full flex-col rounded-2xl border bg-white p-6 sm:p-7 dark:bg-zinc-900/40",
-                    isAi
-                      ? "border-accent-200/80 dark:border-accent-900/60"
-                      : "border-zinc-200 dark:border-zinc-800"
-                  )}
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="font-display text-xl font-semibold">{track.name}</h3>
-                    <Badge
-                      className={cn(
-                        isAi &&
-                          "border-accent-200 bg-accent-50 text-accent-800 dark:border-accent-900 dark:bg-accent-950/50 dark:text-accent-300"
-                      )}
-                    >
-                      {track.period}
-                    </Badge>
-                  </div>
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-                    {track.pitch}
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {track.items.map((item) => (
-                      <Badge key={item} className="text-[11px]">
-                        {item}
-                      </Badge>
-                    ))}
-                  </div>
-                  <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                    Proof
-                  </p>
-                  <ul className="mt-2 flex-1 space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
-                    {track.proof.map((item) => (
-                      <li key={item} className="flex gap-2.5">
-                        <Check
-                          className="mt-0.5 h-4 w-4 shrink-0 text-accent-600 dark:text-accent-400"
-                          aria-hidden="true"
-                        />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    href={track.cta.href}
-                    className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-accent-700 underline-offset-4 hover:underline dark:text-accent-400"
-                  >
-                    {track.cta.label}
-                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                  </Link>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
-      </section>
+      {/*
+        Pin container: the hero sticks only while the About panel scrolls over it,
+        then both leave together, so later sections have nothing behind them.
+      */}
+      <div className="space-y-24 sm:space-y-32">
+        <PinnedHero>
+          <Hero />
+        </PinnedHero>
+        <AboutBento />
+      </div>
 
       {/* Featured product */}
       <Reveal as="section">
@@ -167,13 +107,17 @@ export function HomePage() {
           {site.experience.map((job) => {
             const isCurrent = job.period.endsWith("Present");
             return (
-              <Reveal key={`${job.company}-${job.period}`} as="li" className="relative">
+              <Reveal
+                key={`${job.company}-${job.period}`}
+                as="li"
+                className="relative"
+              >
                 <span
                   className={cn(
                     "absolute -left-[2.4rem] top-1.5 h-3 w-3 rounded-full border-2 border-white dark:border-zinc-950",
                     isCurrent
                       ? "bg-accent-500 ring-4 ring-accent-500/20"
-                      : "bg-zinc-300 dark:bg-zinc-600"
+                      : "bg-zinc-300 dark:bg-zinc-600",
                   )}
                   aria-hidden="true"
                 />
@@ -181,7 +125,10 @@ export function HomePage() {
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                     <h3 className="font-display text-lg font-semibold text-zinc-900 dark:text-zinc-50">
                       {job.role}
-                      <span className="text-zinc-400 dark:text-zinc-600"> · </span>
+                      <span className="text-zinc-400 dark:text-zinc-600">
+                        {" "}
+                        ·{" "}
+                      </span>
                       {job.company}
                     </h3>
                     <p className="inline-flex items-center gap-2 font-mono text-xs text-zinc-500 dark:text-zinc-400">
@@ -234,7 +181,7 @@ export function HomePage() {
                   "h-full rounded-xl border bg-white p-5 dark:bg-zinc-900/40",
                   group.badge
                     ? "border-accent-200/80 dark:border-accent-900/60"
-                    : "border-zinc-200 dark:border-zinc-800"
+                    : "border-zinc-200 dark:border-zinc-800",
                 )}
               >
                 <div className="flex items-center justify-between gap-2">
@@ -330,8 +277,8 @@ export function HomePage() {
             Let&apos;s build something together.
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-zinc-300">
-            Need a senior full-stack engineer, an AI feature inside your product, or
-            an AI product built end to end? I do all three.
+            Need a senior full-stack engineer, an AI feature inside your
+            product, or an AI product built end to end? I do all three.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href="/contact" className={buttonVariants({ size: "lg" })}>
@@ -341,7 +288,7 @@ export function HomePage() {
               href={`mailto:${site.email}`}
               className={cn(
                 buttonVariants({ variant: "outline", size: "lg" }),
-                "gap-2 border-zinc-700 bg-transparent text-zinc-50 hover:border-zinc-500 hover:bg-zinc-800"
+                "gap-2 border-zinc-700 bg-transparent text-zinc-50 hover:border-zinc-500 hover:bg-zinc-800",
               )}
             >
               <Mail className="h-4 w-4" aria-hidden="true" />

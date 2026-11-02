@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 
 type SectionHeadingProps = {
+  id?: string;
   eyebrow?: string;
   title: string;
   description?: string;
@@ -8,6 +9,7 @@ type SectionHeadingProps = {
 };
 
 export function SectionHeading({
+  id,
   eyebrow,
   title,
   description,
@@ -20,9 +22,13 @@ export function SectionHeading({
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h2>
+      <h2 id={id} className="text-2xl font-bold tracking-tight sm:text-3xl">
+        {title}
+      </h2>
       {description ? (
-        <p className="max-w-2xl text-zinc-600 dark:text-zinc-400">{description}</p>
+        <p className="max-w-2xl text-zinc-600 dark:text-zinc-400">
+          {description}
+        </p>
       ) : null}
     </div>
   );

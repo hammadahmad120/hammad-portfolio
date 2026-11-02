@@ -10,12 +10,23 @@ export type SkillGroup = {
   badge?: string;
 };
 
+export type TrackIcon = "web" | "ai";
+
+export type TrackProof = {
+  /** Product or company, shown bold. */
+  name: string;
+  /** One short line under the name. */
+  detail: string;
+};
+
 export type Track = {
   name: string;
+  icon: TrackIcon;
   period: string;
+  /** One sentence; `**text**` renders bold (used to highlight the stack). */
   pitch: string;
-  items: string[];
-  proof: string[];
+  /** Five lines, one per product or role, so the two tiles stay level. */
+  proof: TrackProof[];
   cta: { label: string; href: string };
 };
 
@@ -44,6 +55,29 @@ export type ProjectEntry = {
   tags: string[];
 };
 
+export type StackLogo =
+  "react" | "nextjs" | "typescript" | "nodejs" | "nestjs" | "postgresql";
+
+export type CoreStackItem = {
+  name: string;
+  logo: StackLogo;
+};
+
+export type FocusIcon =
+  | "rag"
+  | "llm"
+  | "agent"
+  | "mcp"
+  | "guardrails"
+  | "evals"
+  | "python"
+  | "pgvector";
+
+export type FocusItem = {
+  label: string;
+  icon: FocusIcon;
+};
+
 export type Stat = {
   value: string;
   label: string;
@@ -51,7 +85,8 @@ export type Stat = {
   context?: string;
 };
 
-export type CaseStudyIcon = "database" | "shield" | "search" | "message" | "chart";
+export type CaseStudyIcon =
+  "database" | "shield" | "search" | "message" | "chart";
 
 export type CaseStudySection = {
   title: string;
@@ -109,56 +144,121 @@ export const site = {
     {
       value: "4",
       label: "Revenue-generating products",
-      context: "Lebara, Educative, Aqari, Zerodocs · millions in monthly transactions combined",
+      context:
+        "Lebara, Educative, Aqari, Zerodocs · millions in monthly transactions combined",
     },
     {
       value: "2",
       label: "AI products I created and built",
-      context: "InstantBot Knowledge Assistant and Document Scout · validated internally",
+      context:
+        "InstantBot Knowledge Assistant and Document Scout · validated internally",
     },
   ] satisfies Stat[],
   tracks: [
     {
       name: "Web platforms",
+      icon: "web",
       period: "7+ years",
       pitch:
-        "Production React/Next.js front-ends and Node.js/NestJS services, from architecture and data modelling to deployment and support.",
-      items: [
-        "React / Next.js",
-        "Node.js / NestJS",
-        "TypeScript",
-        "PostgreSQL / Redis",
-        "GraphQL / REST",
-        "Microservices",
-      ],
+        "Production **React / Next.js** front-ends and **Node.js / NestJS** services on **PostgreSQL** and **Redis**, from architecture to deployment.",
       proof: [
-        "Own Aqari, ADRES Sharjah's government portal, across web, iOS, and Android — releases, API client, analytics, and the native bridge",
-        "Caching, rate limiting, and live production debugging for Lebara's telecom platform (4M+ users, 5 countries)",
-        "Service lead and team lead of four on Afiniti's contact-center microservices",
+        {
+          name: "Aqari · ADRES Sharjah",
+          detail:
+            "Government real-estate portal across web and native apps: 20 workflows built from scratch, webviews, event tracking, and Jest",
+        },
+        {
+          name: "Lebara",
+          detail:
+            "Telecom platform for 4M+ users in 5 countries: Redis caching, a brute-force rate limiter, and App Insights-driven bug fixes",
+        },
+        {
+          name: "Afiniti",
+          detail:
+            "Contact-center platform where I led 3 microservices, cutting setup from 5 minutes to under 1 and raising test coverage from 0% to 80%",
+        },
+        {
+          name: "Zerodocs",
+          detail:
+            "Document collaboration SaaS I built from scratch and ran in production as the sole developer, from features to incident fixes",
+        },
+        {
+          name: "Educative.io",
+          detail:
+            "Learning platform used by 1M+ developers, where my SSR, caching, and SEO work lifted Lighthouse above 80 on every metric",
+        },
       ],
       cta: { label: "See experience", href: "#experience" },
     },
     {
       name: "AI-powered products",
+      icon: "ai",
       period: "Since 2026",
       pitch:
-        "AI applications built end to end: retrieval, grounding and guardrails, evaluation, and the product people actually use.",
-      items: [
-        "RAG / hybrid retrieval",
-        "pgvector",
-        "Grounding & guardrails",
-        "LLM evaluation",
-        "Gemini / Groq APIs",
-        "Agents, tool calling, MCP",
-      ],
+        "AI products built end to end in **Python** and **Node.js**: **RAG** retrieval on **pgvector**, **LLM** grounding and guardrails, **agents** and **MCP**, and evaluation.",
       proof: [
-        "Created InstantBot: two AI products, Knowledge Assistant and Document Scout, validated internally",
-        "Document Scout: LLM-driven screening with source-quoted verification, used by HR to screen CVs against job requirements",
-        "Evaluation framework tracking recall, MRR, hit@k, and latency",
+        {
+          name: "InstantBot",
+          detail:
+            "Two AI products I created: Knowledge Assistant and Document Scout",
+        },
+        {
+          name: "Knowledge Assistant",
+          detail:
+            "Grounded, citation-backed answers on web chat, widget, and WhatsApp",
+        },
+        {
+          name: "Document Scout",
+          detail:
+            "LLM screening with source-quoted verification, used by HR for CVs",
+        },
+        {
+          name: "Multi-tenant core",
+          detail:
+            "Row-level security, rate limits, and per-tenant quotas across three channels",
+        },
+        {
+          name: "Evaluation loop",
+          detail: "Framework tracking recall, MRR, hit@k, and latency",
+        },
       ],
       cta: { label: "Read the case study", href: "/projects/instantbot" },
     },
   ] satisfies Track[],
+  /** Bento tile: the six tools that define the web track. */
+  coreStack: [
+    { name: "React", logo: "react" },
+    { name: "Next.js", logo: "nextjs" },
+    { name: "TypeScript", logo: "typescript" },
+    { name: "Node.js", logo: "nodejs" },
+    { name: "NestJS", logo: "nestjs" },
+    { name: "PostgreSQL", logo: "postgresql" },
+  ] satisfies CoreStackItem[],
+  /**
+   * Bento tile: ring of current AI focus areas around the tenure label. Exactly 8
+   * items, placed clockwise from 3 o'clock; keep short labels at 3 and 9 o'clock
+   * and long ones diagonal so neighbours never touch.
+   */
+  focusRing: {
+    title: "AI-powered products",
+    period: "since 2026",
+    items: [
+      { label: "RAG", icon: "rag" },
+      { label: "Agentic AI", icon: "agent" },
+      { label: "Python", icon: "python" },
+      { label: "Guardrails", icon: "guardrails" },
+      { label: "MCP", icon: "mcp" },
+      { label: "pgvector", icon: "pgvector" },
+      { label: "LLMs", icon: "llm" },
+      { label: "Evals", icon: "evals" },
+    ] satisfies FocusItem[],
+  },
+  /** Bento tile: how I work. */
+  howIWork: [
+    "I own delivery end to end: web, mobile, and backend.",
+    "Remote-first and async across time zones. I have worked with teams in the UAE, Europe, and the US.",
+    "I ship with tests, docs, and monitoring, not just features.",
+  ],
   social: [
     {
       label: "GitHub",
@@ -267,7 +367,8 @@ export const site = {
       role: "Senior Software Engineer",
       location: "Lahore",
       period: "Feb 2023 – Sep 2024",
-      project: "Lebara — telecom platform, 4M+ users across Germany, the UK, the Netherlands, Denmark, and France",
+      project:
+        "Lebara — telecom platform, 4M+ users across Germany, the UK, the Netherlands, Denmark, and France",
       highlights: [
         "Built full-stack features for a platform serving millions of live users and absorbing traffic spikes of millions of requests within seconds, integrating third-party and internal services with architecture reviews, docs, and unit tests.",
         "Stopped brute-force attacks with a custom Redis-backed rate limiter and reCAPTCHA v3; cached slow-changing data in Redis to cut API latency.",
@@ -425,7 +526,13 @@ export const site = {
         "Government digital services portal with 29 real-estate workflows across web and native apps. I own the frontend across web, iOS, and Android: typed web-to-native bridge, GA4 analytics layer, hardened API client, shared component library, and releases.",
       category: "web",
       href: "https://ds.sharjah.ae/home",
-      tags: ["Next.js 14", "React 18", "TypeScript", "Redux Toolkit", "Material UI"],
+      tags: [
+        "Next.js 14",
+        "React 18",
+        "TypeScript",
+        "Redux Toolkit",
+        "Material UI",
+      ],
     },
     {
       title: "Lebara — telecom platform",
@@ -433,7 +540,16 @@ export const site = {
         "Telecom platform serving 4M+ users across Germany, the UK, the Netherlands, Denmark, and France. Built full-stack features; stopped brute-force attacks with a custom Redis-backed rate limiter and reCAPTCHA v3; cut API latency with Redis caching; debugged live production with Azure App Insights.",
       category: "web",
       href: "https://www.lebara.com/",
-      tags: ["React", "Redux", "GraphQL", "Node.js", "TypeScript", "Redis", "Azure App Insights", "Adyen"],
+      tags: [
+        "React",
+        "Redux",
+        "GraphQL",
+        "Node.js",
+        "TypeScript",
+        "Redis",
+        "Azure App Insights",
+        "Adyen",
+      ],
     },
     {
       title: "Mega — contact-center platform (Afiniti)",
@@ -441,7 +557,14 @@ export const site = {
         "Contact-center product on microservices. Service lead for billing, auto-configuration, and storefront: REST APIs, Swagger docs, database design, and per-service front-ends. Cut configuration time from 3–5 minutes to under 1 minute, raised test coverage from 0% to 80%, and led a team of four.",
       category: "web",
       note: "Internal product, no longer publicly available",
-      tags: ["NestJS", "Next.js", "PostgreSQL", "TypeORM", "Material UI", "Stripe"],
+      tags: [
+        "NestJS",
+        "Next.js",
+        "PostgreSQL",
+        "TypeORM",
+        "Material UI",
+        "Stripe",
+      ],
     },
     {
       title: "Educative.io — interactive learning platform",

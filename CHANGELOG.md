@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-11-02 — Pinned hero and About bento (revamp task 1)
+
+- Hero pins to the viewport on large, tall screens (`pin:` screen in Tailwind) and
+  softly blurs/dims while the About bento, a content-width bordered panel, scrolls
+  over it (`components/home/PinnedHero.tsx`). Hero and bento share a pin container,
+  so the hero leaves with the panel. Smaller or shorter viewports keep normal flow.
+- New About bento (`components/home/AboutBento.tsx`) replaces the separate stats
+  strip and "Two tracks" section: stats row, two track tiles, Core stack logos,
+  Current focus ring (RAG, Agentic AI, Python, Guardrails, MCP, pgvector, LLMs,
+  Evals) and How I work. Content added to `lib/site.ts` (`coreStack`, `focusRing`,
+  `howIWork`); stack logos added to `components/icons.tsx` from Simple Icons.
+- Page container, navbar and footer widened from `max-w-5xl` to `max-w-7xl`; `body`
+  clips horizontal overflow so the hero glow cannot add a horizontal scrollbar.
+- `SectionHeading` accepts an `id`.
+
 ## 2026-10-12 — Visual redesign
 
 - Teal accent colour, Geist display font, dot-grid and glow backgrounds.

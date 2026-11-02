@@ -30,7 +30,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-zinc-200/80 bg-white/80 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/80">
       <nav
-        className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-4 sm:px-6"
+        className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6"
         aria-label="Main"
       >
         <Link
@@ -99,7 +99,7 @@ export function Navbar() {
           id="mobile-nav"
           className="border-t border-zinc-200 sm:hidden dark:border-zinc-800"
         >
-          <ul className="mx-auto max-w-5xl space-y-1 px-4 py-3">
+          <ul className="mx-auto max-w-7xl space-y-1 px-4 py-3">
             {links.map(({ href, label }) => {
               const isActive = isActivePath(pathname, href);
               return (
